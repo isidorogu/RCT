@@ -22,7 +22,7 @@ treatment_assign <- function(data,
                              strata_varlist,
                              missfits = c("global", "NA", "strata"),
                              seed = 1990,
-                             share_ti = 1/n_t - share_control/n_t,
+                             share_ti = rep(1/n_t - share_control/n_t, times = n_t),
                              key) {
     
     
@@ -89,12 +89,14 @@ treatment_assign <- function(data,
     
     
     # Treatment sequence, if equal
-    seq_treat<-seq(1, n_t)
     group_sequence  <- c(0,
                          share_control,
-                         share_control + seq_treat * (1-share_control)/n_t)
+                         share_ti)
+    
+    group_sequence<-cumsum(group_sequence)
     
     data <- data.table::as.data.table(data)
+    
     for (i in 1:(n_t+2)) {
         
         data <- data[strata_index/n_strata <= group_sequence[i + 1] &
