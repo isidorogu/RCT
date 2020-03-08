@@ -34,3 +34,60 @@ e<-tau_min(diamonds$depth, N = nrow(diamonds), power = 0.9)
 
 estadisticas_descriptivas(data = diamonds)
 estadisticas_descriptivas(data = diamonds, na.rm = F)
+
+
+###########################
+
+diamonds<-diamonds
+
+
+# Una variable estratificadora, equal shares, global
+assigment<-treatment_assign(data = diamonds, 
+                            share_control = 0.1, 
+                            n_t = 3, 
+                            strata_varlist = vars(cut), 
+                            missfits = "global", 
+                            seed = 1990, 
+                            key = "z")
+
+
+
+list2env(assigment, envir = .GlobalEnv)
+table(data$treat, useNA = "ifany")
+prop.table(table(data$treat, useNA = "ifany"))
+
+# Una variable estratificadora, equal shares, strata
+rm(assigment, data, summary_strata)
+
+assigment<-treatment_assign(data = diamonds, 
+                            share_control = 0.1, 
+                            n_t = 3, 
+                            strata_varlist = vars(cut, color), 
+                            missfits = "strata", 
+                            seed = 1990, 
+                            key = "z")
+
+
+
+list2env(assigment, envir = .GlobalEnv)
+table(data$treat, useNA = "ifany")
+prop.table(table(data$treat, useNA = "ifany"))
+
+
+# dos variables, NA, equal shares
+rm(assigment, data, summary_strata)
+
+assigment<-treatment_assign(data = diamonds, 
+                            share_control = 0.1, 
+                            n_t = 3, 
+                            strata_varlist = vars(cut, color), 
+                            missfits = "NA", 
+                            seed = 1990, 
+                            key = "z")
+
+
+
+list2env(assigment, envir = .GlobalEnv)
+table(data$treat, useNA = "ifany")
+prop.table(table(data$treat, useNA = "ifany"))
+
