@@ -1,20 +1,15 @@
 # Random Assignment: This macro function divides itself in 3 functions:
-# 1. Create Treatment status var: treatment_status_var
-# 2. Create strata variable: rct_strata
-# 3. Create cuartiles, ntile with label: rct_ntile
+# 1. Create Treatment status var: treatment_assign
+# 2. Create cuartiles, ntile with label: ntile_label
 
 
-# 1. Create Treatment status var: treatment_status_var
+# 1. Create Treatment status var: treatment_assign
 # Description: This function creates a variable that indicates the treatment status
-# Arguments: treat_var, share_control, n treatment groups, strata, missfits, seed, equal
+# Arguments: share_control, n_t (n treatment groups), strata_varlist, share_ti, missfits, seed, key
 # miss fits: NA,
 #           strata (missfits allocated to strata randomly),
 #           global (assigning missfits to treatment). estratos pequenos y missfits 
 
-
-
-# Equal fractions, los misfits son el modulo de n_strata / n_trats.
-# Unequal fractions,
 
 treatment_assign <- function(data,
                              share_control,
@@ -189,3 +184,27 @@ treatment_assign <- function(data,
     
 }
 
+
+
+# 2. Creates stratification variables: rct_ntile
+# Description: This function creates categorical variables from continues variables. with labels
+# Arguments: var, n_groups, labels
+
+ntile_label <- function(var, n) {
+    
+    secuencia<-seq(0, 1, by = 1/n)
+    cuantiles <-quantile(var, secuencia)
+    cuantiles2<-cuantiles[2:length(cuantiles)]
+    label<-head(str_c("[", cuantiles, " a " ,cuantiles2, "]"), -1)
+    
+    referencia<-tibble(grupos = seq(1, n), 
+                       label = label)
+    
+    data<-tibble(var = var, 
+                 grupos = ntile(var, n))
+    
+    data <-
+        left_join(data, referencia, by  = "grupos")
+    
+    return(data$label)                      
+}

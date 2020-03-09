@@ -91,3 +91,69 @@ list2env(assigment, envir = .GlobalEnv)
 table(data$treat, useNA = "ifany")
 prop.table(table(data$treat, useNA = "ifany"))
 
+
+
+# Unequal fractions 
+
+rm(assigment, data, summary_strata)
+
+assigment<-treatment_assign(data = diamonds, 
+                            share_control = 0.1, 
+                            n_t = 3, 
+                            strata_varlist = vars(cut, color), 
+                            share_ti = c(0.4, 0.2, 0.3),
+                            missfits = "global", 
+                            seed = 1990, 
+                            key = "z")
+
+
+
+list2env(assigment, envir = .GlobalEnv)
+table(data$treat, useNA = "ifany")
+prop.table(table(data$treat, useNA = "ifany"))
+
+
+
+####################
+# ntile_label
+####################
+
+ntile_label(var = diamonds$price, n = 10)
+
+diamantes<-diamonds
+
+diamantes<-
+  diamantes %>%
+  mutate(price_deciles = ntile_label(price, 10))
+
+
+diamantes %>% 
+  group_by(price_deciles) %>% 
+  summarise(min = min(price), 
+            max = max(price))
+
+
+
+##############
+# Balance table 
+##############
+
+library(tidyverse)
+library(data.table)
+
+diamonds<-bind_cols(diamonds, data %>% select(strata, treat, missfit))
+
+#a<-balance_table(data = diamantes %>% select(price, x, y, z, treat), treatment = "treat")
+a<-balance_table(data = diamonds %>% select(price, x, y, z, treat), treatment = "treat")
+
+rm(a, b, bal1, diamantes, tabla_0_1)
+rm(trats)
+
+
+
+######################
+# Balance regressions 
+######################
+b<-balance_regression(data = diamonds, treatment = "treat")
+list2env(b, envir = .GlobalEnv)
+
