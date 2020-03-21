@@ -4,6 +4,8 @@
 
 balance_table<-function(data, treatment) {
   
+  data <- data %>% arrange(!!sym(treatment))
+  
   valores_trat <- unique(dplyr::pull(data, !!sym(treatment)))
   
   trats<-valores_trat[2:length(valores_trat)]

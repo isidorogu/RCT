@@ -5,6 +5,8 @@
 
 balance_regression <- function(data, treatment) { 
     
+    data <- data %>% dplyr::arrange(!!sym(treatment))
+    
     valores_trat <- unique(dplyr::pull(data, !!sym(treatment)))
     
     trats<-valores_trat[2:length(valores_trat)]
@@ -13,7 +15,6 @@ balance_regression <- function(data, treatment) {
         data %>%
             dplyr::filter(!!sym(treatment) == valores_trat[1] | !!sym(treatment) ==  !!x))
     
-#    regressions<-map(bal_tables, function(x) x %>% do(fit = lm(!!sym(treatment) ~ ., data = x)))
     formula<-glue("{treatment}~ .")
     regressions <- map(bal_tables, ~lm(as.formula(formula), data = .))
     

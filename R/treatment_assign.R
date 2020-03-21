@@ -190,21 +190,26 @@ treatment_assign <- function(data,
 # Description: This function creates categorical variables from continues variables. with labels
 # Arguments: var, n_groups, labels
 
-ntile_label <- function(var, n) {
+ntile_label <- function(var, n, digits = 0) {
     
     secuencia<-seq(0, 1, by = 1/n)
-    cuantiles <-quantile(var, secuencia)
-    cuantiles2<-cuantiles[2:length(cuantiles)]
-    label<-head(str_c("[", cuantiles, " a " ,cuantiles2, "]"), -1)
+    cuantiles <- round(quantile(var, secuencia), digits = digits)
     
-    referencia<-tibble(grupos = seq(1, n), 
+    cuantiles2<-round(cuantiles[2:length(cuantiles)], digits = digits)
+    label<-str_c("[", head(cuantiles, -1), " a ", cuantiles2, "]")
+    
+    referencia<-dplyr::tibble(grupos = seq(1, n), 
                        label = label)
     
-    data<-tibble(var = var, 
-                 grupos = ntile(var, n))
+    data<-dplyr::tibble(var = var, 
+                 grupos = dplyr::ntile(var, n))
     
     data <-
-        left_join(data, referencia, by  = "grupos")
+        dplyr::left_join(data, referencia, by  = "grupos")
+    
+    data <-
+        data %>% 
+        mutate(label = fct_reorder(.f = label, .x = var))
     
     return(data$label)                      
 }
