@@ -169,7 +169,7 @@ universo_durante<-
 
 
 # Prueba 1: todo 
-evaluacion<-impact_eval2(data = universo_durante, 
+evaluacion<-impact_eval(data = universo_durante, 
                          endogenous_vars = c("SDOPROM_VISTA", "log_saldo_promedio"), 
                          treatment = "msj", 
                          heterogenous_vars = c("cuartiles_ingreso", "mediana_antiguedad"), 
@@ -190,7 +190,9 @@ evaluacion<-impact_eval(data = universo_durante,
                          control_vars = c("ING_MENSUAL", "SDO_TDC"))
 
 
+summary(evaluacion)
 
 list2env(evaluacion, envir = .GlobalEnv)
+
 
 
