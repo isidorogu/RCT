@@ -1,11 +1,7 @@
-# Elementos para la funcion
 
-# outcome_var: debe ser un vector numerico. YA
-# N: debe ser un numero, positivo
-# significance, power: numero entre 0 y 1
-# share_control: numero entre cero y 1
-# n_groups: numero entero > 2
-
+#####################
+# tau_min
+#####################
 
 # Prueba 1 de la funcion
 library(tidyverse)
@@ -30,13 +26,15 @@ e<-tau_min(diamonds$depth, N = nrow(diamonds), power = 0.9)
 
 
 #############################
+# summary_statistics
+############################
 
-
-estadisticas_descriptivas(data = diamonds)
-estadisticas_descriptivas(data = diamonds, na.rm = F)
+a<-summary_statistics(data = diamonds)
 
 
 ###########################
+# treatment_assign
+##########################
 
 diamonds<-diamonds
 
@@ -156,4 +154,43 @@ rm(trats)
 ######################
 b<-balance_regression(data = diamonds, treatment = "treat")
 list2env(b, envir = .GlobalEnv)
+
+
+################
+# impact_eval
+###############
+
+# Cargando la base de algun experimento
+unique(universo_durante$fecha)
+
+universo_durante<-
+  universo_durante %>%
+  filter(fecha == "42-2019")
+
+
+# Prueba 1: todo 
+evaluacion<-impact_eval2(data = universo_durante, 
+                         endogenous_vars = c("SDOPROM_VISTA", "log_saldo_promedio"), 
+                         treatment = "msj", 
+                         heterogenous_vars = c("cuartiles_ingreso", "mediana_antiguedad"), 
+                         cluster_vars = "NUM_CLIE", 
+                         fixed_effect_vars = c("fecha", "strata"), 
+                         control_vars = c("ING_MENSUAL", "SDO_TDC"))
+
+
+
+list2env(evaluacion, envir = .GlobalEnv)
+
+# Prueba 2: sin heterogeneidades 
+evaluacion<-impact_eval(data = universo_durante, 
+                         endogenous_vars = c("SDOPROM_VISTA", "log_saldo_promedio"), 
+                         treatment = "msj", 
+                         cluster_vars = "NUM_CLIE", 
+                         fixed_effect_vars = c("fecha", "strata"), 
+                         control_vars = c("ING_MENSUAL", "SDO_TDC"))
+
+
+
+list2env(evaluacion, envir = .GlobalEnv)
+
 

@@ -121,7 +121,7 @@ tau_min_probability <- function(prior,
 
     share_control_ti = share_control/(share_control + share_ti)
 
-    variance = prior
+    variance = prior*(1-prior)
 
     estadistico  = (qnorm(power) + qnorm(1 - significance/2))^2
 
