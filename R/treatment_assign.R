@@ -1,21 +1,35 @@
-# Random Assignment: This macro function divides itself in 3 functions:
-# 1. Create Treatment status var: treatment_assign
-# 2. Create cuartiles, ntile with label: ntile_label
-
-
-# 1. Create Treatment status var: treatment_assign
-# Description: This function creates a variable that indicates the treatment status
-# Arguments: share_control, n_t (n treatment groups), strata_varlist, share_ti, missfits, seed, key
-# miss fits: NA,
-#           strata (missfits allocated to strata randomly),
-#           global (assigning missfits to treatment). estratos pequenos y missfits 
-
+#' Robust treatment assignment by strata/blocks
+#' @param data A data.frame, tibble or data.table
+#' @param share_control share of the observations assigned to control group
+#' @param n_t Number of treatments groups
+#' @param strata_varlist vector of categorical variables to form the strata/blocks for random assignment. 
+#' Should be in the form of vars(var1, var2, ...)
+#' @param misfits How to handle the misfits. Default is "global". See Carril (2016) for details.
+#' @param share_ti The share of each treatment group. If NULL (Default), each treatment group will 
+#' have equal share.
+#' @param seed A number used to set.seed(). 
+#' @param key The key identifier column of data. 
+#' @return A list: "data" = the data with key, treat, strata, misfit column., 
+#' "summary_strata" = A summary tibble with the membership of each strata and its size.
+#' @examples 
+#' assigment<-treatment_assign(data = diamonds, share_control = 0.1, n_t = 3,
+#'                             strata_varlist = vars(cut, color), missfits = "strata", 
+#'                             seed = 1990, key = "z")
+#' list2env(assigment, envir = .GlobalEnv)
+#' table(data$treat, useNA = "ifany")
+#' prop.table(table(data$treat, useNA = "ifany"))
+#' @details This function creates a variable that indicates the treatment status. The random 
+#' assignment is made by strata/blocks. It can handle equal or unequal treatment shares. 
+#' Finally, it has three methods availables to handle misfits (same as randtreat in STATA):
+#' "global": assigning the observations that couldn't be randomly assigned globally, 
+#' "strata": assigning the observations that couldn't be randomly assigned by strata,
+#' "NA": set the the treat observations that couldn't be randomly assigned to NA.
 
 treatment_assign <- function(data,
                              share_control,
                              n_t = 2,
                              strata_varlist,
-                             missfits = c("global", "NA", "strata"),
+                             misfits = c("global", "NA", "strata"),
                              seed = 1990,
                              share_ti = rep(1/n_t - share_control/n_t, times = n_t),
                              key) {
@@ -186,14 +200,22 @@ treatment_assign <- function(data,
 
 
 
-# 2. Creates stratification variables: rct_ntile
-# Description: This function creates categorical variables from continues variables. with labels
-# Arguments: var, n_groups, labels
+#' Rank observations in n groups, with labels
+#' @param var The variable wished to be ntile_label 
+#' @param n rank the variable in n groups 
+#' @param digits How many digits to include in the label 
+#' @return A ordered factor vector of each n group. The value has the form of [min(n_i) - max(n_i)]
+#' @examples 
+#' ntile_label(var = diamonds$price, n = 10)
+#' diamantes<- diamantes %>% mutate(price_deciles = ntile_label(price, 10))
+#' @details n_tile_label is very similar to ntile from dplyr. But n_tile_label creates
+#' the n groups and then labels them. For each group i, the value of the ntile_label is 
+#' [min(i) - max(i)].
 
 ntile_label <- function(var, n, digits = 0) {
     
     secuencia<-seq(0, 1, by = 1/n)
-    cuantiles <- round(quantile(var, secuencia), digits = digits)
+    cuantiles <- round(quantile(var, secuencia, na.rm = T), digits = digits)
     
     cuantiles2<-round(cuantiles[2:length(cuantiles)], digits = digits)
     label<-str_c("[", head(cuantiles, -1), " a ", cuantiles2, "]")

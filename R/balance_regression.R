@@ -1,7 +1,14 @@
-# balance_regression: Runs a LPM on trat~X'B
-# Description: This function runs a regression to assess which variables a relevant to determine
-#              treatment status. It is specially useful for RCTs with high dimensional data.
-# Arguments: data, treatment 
+#' Runs a LPM of treatment status against all covariates (treatment~X'B). 
+#' @param data A data.frame, tibble or data.table
+#' @param treatment a string with treatment status column
+#' @return A list: "regression_tables" = regression output of treatment~X'B, "F_test" = table with the F tests of each regression
+#' @examples 
+#' data <-data.frame(x = c(1:5), treatment = c(0,1,0,1,0))
+#' balance_regression(data, "treatment")
+#' @details This functions runs a Linear Probability model of each treatment group & control on all the 
+#' columns in data. For instance, if treatment column has values of (0,1,2), balance_regression will run two 
+#' models: 1) LPM(treatment(0,1)~X'b) and 2) LPM(treatment(0,2)~X'b). The value are the regression tables and 
+#' details of the F_test of these models.
 
 balance_regression <- function(data, treatment) { 
     

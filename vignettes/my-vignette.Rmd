@@ -1,0 +1,187 @@
+---
+title: "RCT-vignette"
+author: "Isidoro Garcia Urquieta"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(devtools)
+library(roxygen2)
+#library(RCT)
+```
+
+# How to use RCT 
+
+## Randomized Control Trials Theory
+A randomized control trial consists of experiment in which the treatment status es randomly assigned. 
+Let's introduce some notation:
+
+**Treatment indicator variable**
+$W = 1$ if the unit received the active treatment
+$W = 0$ if the unit received the control treatment
+
+**Outcomes under treatment**
+
+$Y_i(1)$ = outcome for unit i if received the active treatment
+$Y_i(0)$ = outcome for unit i if received the control treatment
+
+**Causal effect of treatment on unit i**
+
+$Y_i(1) – Y_i(0)$
+	
+This introduces the fundamental problem of causal inferencia. We only observe each unit either in the treatment or control group. 
+
+This is: 
+
+$Y_i = W*Y_i(1) + (1-W)Y_i(0)$
+
+As a result, we have an option for evaluating the *Average* Treatment Effect. 
+
+$E[Y_i(1)-Y_i(0)] = ATE$
+
+This could lead to think of evaluating impact as: 
+
+$E[Y_i(1) | W=1] - E[Y_i(0) | W=0] $
+
+### Selection Bias and Random Assignment
+However, this rises the problem of selection bias. People that were treated are not the equal in observables nor unobersables to the ones treated. This sets the need for *Randomized Control Trials*. 
+In a RCT, treatment is randomly assigned. This guarantees that: 
+
+$E[Y_i(1) | W=1] = E[Y_i(1) | W=0] = E[Y_i(1)]$
+$E[Y_i(0) | W=1] = E[Y_i(0) | W=0] = E[Y_i(0)]$
+
+This enables an unbiased estimator of *ATE*: 
+
+$E[Y_i(1)-Y_i(0)] = E[Y_i(1)] - E[Y_i(0)]  = ATE$
+
+### Balance tests 
+
+This is posbbile because random assignment assures observable baseline characterics of treatment groups should be similar, statistical unsignificant. This is *balance* of covariates: 
+
+$E[X(1)] = E[X(0)]$
+
+Where $X_{n,k}$
+
+Aditionally, if $k$ is sufficiently big. One can end-up in a multiple hypothesis problem, where approximately x% (level of significance) is significant by chance. 
+
+Hence, we can test balance by running the following regression: 
+
+Let
+
+$$treat_i = {0,1,2,3, ..., n}$$
+
+For $i = 1$ to $i=n$  
+
+$$eachtreat = treat = i>0 \ | \ treat = 0$$
+
+$$Pr(eachtreat) = X'\beta +\epsilon$$ 
+
+Then, we can check the balance in covariates by running the F-test of these model against the NULL model $Pr(eachtreat) = \alpha +\epsilon $. If this test is not significant, we can assure that all the covariates $X'$ are no good to predict the treatment status. Hence, covariates are balanced between treatment groups. 
+
+### Testing for impact
+
+$$Y_i = \alpha + \tau treatment + \epsilon $$
+
+To test if the treatment effect ($\tau$) is significant, we compute its T-statistic: 
+
+$$T = \frac{\bar Y_1 - \bar Y_o}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}   $$
+
+## Functions in library to design a RCT
+
+Let the steps of the design be a RCT: 
+
+### 1. Get data in which you want to randomly assign treatment
+
+This library has a function called **summary_statistics** to know the distribution of all covariates in data. 
+
+### 2. Decide the share of observations that will go to treatment 
+
+Suppose we have N observations in data. We want to know how many observations we need to assign to control that will enable a detection of impact of treatment statistically. This process is based upon (Athey and Imbens (2016)).
+
+Lets start with the statistics to assess if the impact is significant:
+
+$$T = \frac{\bar Y_1 - \bar Y_0 - \tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})} } \sim N(0,1)  $$
+
+This means the T-statistic is distributed: 
+
+$$T = \mathcal{N}(\frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}, 1) $$
+
+Now, the probability the null will be reject at the $\alpha$ level is: 
+
+$$Pr(|T| > \Phi^{-1}(1-\frac{\alpha}{2})) = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}) $$
+
+We want the probability of rejecting the null hypothesis when it is false to be equal to $\beta$, the power. 
+
+$$\beta = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}) $$
+So, applying $\Phi^{-1}$ to both sides:
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}} $$
+
+Now, multiplying by $\frac{\sqrt N}{\sqrt N}$
+
+Finally, $share control = \frac{N_c}{N}$ and  $1-sharecontrol = \frac{N_T}{N}$: 
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt N}{\sqrt{ \sigma^2(\frac{1}{1-sharecontrol}+\frac{1}{sharecontrol})}} $$
+
+$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt{ N sharecontrol(1-sharecontrol)}}{ \sigma} $$
+
+$$\tau = \frac {[\Phi^{-1}(\beta) + \Phi^{-1}(1-\frac{\alpha}{2})]\sigma}{\sqrt{ N sharecontrol(1-sharecontrol)}}$$
+Where $\tau$ is the minimum detectable effect. Note that, given N, $\sigma$, $\beta$ and $\alpha$, the minimum detectable effect is lowest when share control = 0.5. 
+
+Finally, note that this formula applies when comparing each treatment to control. It only has to adjust N = N control + N treati. The function **tau_min** calculares $\tau$ globally (i.e. all treatment vs control) and for each treatment. 
+
+### 3. Decide which variables to use for strata building
+
+Prior to random assigment, one has to decide which **categorical** variables to build blocks. Hence, the blocks or strata are the group that combine every categorical variable. The cardinality of this groups are all the possible combinations of the chose categorial variables. 
+
+To build categorical variables in a powerful way, function **n_tile_label** divides variables in the decided n groups, putting label of the range of each category to the variable. 
+
+### 4. Random Assignment 
+
+Once we have the blocking variables, we need to assign treatment status **within** each strata. Function treatment_assign performs such random assignment for any given number of treatment groups. Furthermore, it handles misfits. 
+
+Misfits are defined as observations within each strata that are not really randomly assigned because when dividing the size of each strata N_strata to each treatment share, there are some remainder observations. 
+
+For instance, let the following example: 
+
+N_strata = 10 
+share_control = $\frac{1}{3}$
+share_treat_1 = $\frac{1}{3}$
+share_treat_2 = $\frac{1}{3}$
+
+First 3 units are assigned to control, second 3 units are assigned to treat 1 and the last 3 unit are assigned to treat 2. As you already notice, the last observation is the remainder. This is a misfit. Misfits alter the succesful random assignment because they are not. In the example, this observation is assigned to treat 2 non-randomly. 
+
+The function **treatment_assign** handles misfits in three ways. 
+
+- "NA" assigns the misfits to NAs, leaving the experiment with only the pure assigned observations. 
+
+- "global" puts together the misfits of each strata into a single group and then assigns them randomly
+
+- "strata" assigns misfits to treatment within each strata
+
+### 5 Impact evaluation 
+
+After running a RCT, the social scientist wants to know the ATE for one or several variables and the distribution of this impact within the blocking variables to check for Heterogenous Treatment Effects. Aditionally, if the experiment lasted for more than one period and panel-data is available, one must cluster the standard errors by each i unit and control for period fixed effects. Finally, if by chance one o more covariates are not balance, one would like to control for them. 
+
+Function **impact_eval** does all this jobs in one single command. It runs all the ATE regressions for each endogenous variable, all the combinations of endogenous variables*heterogenous variables. 
+
+For each combination the model run is:
+
+$$Y_i = \alpha + \tau treatment + \epsilon $$
+
+
+
+
+
+

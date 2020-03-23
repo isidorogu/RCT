@@ -1,8 +1,20 @@
-# Computation of the minimum detectable difference between control group and each treatment
-# Isidoro Garcia Urquieta
-# Description: This function calculates the minimum difference that could show significant
-#              between any two given groups (e.g. control vs each treatment), given the
-#              population size (N), the outcome variable and Type I and Type II probabilities
+#' Computation of the minimum detectable difference between control group and each treatment
+#' @param outcome_var the variable for which you wish to test the impact of treatment 
+#' @param N number of observations in the RCT, usually nrow(data)
+#' @param significance The level of significance of the test Pr(Reject H_0 | H_0 False). Default is 0.05
+#' @param power The level of power of the test (1 - Pr(Reject H_0 | H_0 True) ). Default is 0.8
+#' @param share_control The share of observations in N assigned to control. This argument allows for sequences (i.e. seq(0,1,0.1))
+#' @param n_groups Number of groups (control + # treatment groups)
+#' @return A tibble with the share_control and N observations in control group (N_control), 
+#' the share and N of each treatment c(share_ti, N_ti), 
+#' total share of treatment rows and N treated (share_treat, N_treat), N, 
+#' the minimum detectable difference between control and all treatments together (tau_min_global),
+#' the minimum detectable difference between control and each treatment (tau_min_each_treat)
+#' @examples 
+#' tau_min(outcome_var = data$Y, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+#' @details This function calculates the minimum difference that could show significant 
+#' E[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
+#' population size (N), the outcome variable, power and significance
 
 tau_min <- function(outcome_var,
                     N,
@@ -104,6 +116,25 @@ tau_min <- function(outcome_var,
     }
 }
 
+}
+
+#' Computation of the minimum detectable difference between control group and each treatment for a dicotomical variable
+#' @param prior Pr(Y=1). 
+#' @param N number of observations in the RCT, usually nrow(data)
+#' @param significance The level of significance of the test Pr(Reject H_0 | H_0 False). Default is 0.05
+#' @param power The level of power of the test (1 - Pr(Reject H_0 | H_0 True) ). Default is 0.8
+#' @param share_control The share of observations in N assigned to control. This argument allows for sequences (i.e. seq(0,1,0.1))
+#' @param n_groups Number of groups (control + # treatment groups)
+#' @return A tibble with the share_control and N observations in control group (N_control), 
+#' the share and N of each treatment c(share_ti, N_ti), 
+#' total share of treatment rows and N treated (share_treat, N_treat), N, 
+#' the minimum detectable difference between control and all treatments together (tau_min_global),
+#' the minimum detectable difference between control and each treatment (tau_min_each_treat)
+#' @examples 
+#' tau_min(prior = 0.05, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+#' @details This function calculates the minimum difference that could show significant 
+#' Pr[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
+#' population size (N), the outcome variable, power and significance
 
 tau_min_probability <- function(prior,
                                 N,
@@ -145,7 +176,7 @@ tau_min_probability <- function(prior,
     return(tau_min_DT)
     }
     }
-}
+
 
 
 

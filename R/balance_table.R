@@ -1,6 +1,16 @@
-# balance_table: Createa balance table for the X variables supplied
-# Description: This function creates a table with the t.test of balance 
-# Arguments: data, treatment, by 
+#' Creates balance table for the X variables across treatment status
+#' @param data A data.frame, tibble or data.table
+#' @param treatment a string with treatment status column
+#' @return A tibble with Mean_value of each treatment status and p_values
+#' @examples 
+#' data <-data.frame(x = c(1:5), treatment = c(0,1,0,1,0))
+#' balance_table(data, "treatment")
+#' @details This function performs t.test(X~treatment) for each X column in data. Every value of 
+#' treatment i.e 1,2,3,...N is compared against control value (0) or the first value of the treatment
+#' column. For instance, If treatment column has values of (0,1,2,3), balance_table will return: 
+#' the mean value of each treatment (for all X's), and the p_values of the t.test of (1,2,3) against
+#' treatment = 0.  
+
 
 balance_table<-function(data, treatment) {
   
