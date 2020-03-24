@@ -16,6 +16,7 @@
 #' E[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
 #' population size (N), the outcome variable, power and significance
 
+#' @export
 tau_min <- function(outcome_var,
                     N,
                     power = 0.8,
@@ -44,7 +45,7 @@ tau_min <- function(outcome_var,
 
         else if ("numeric" %in% class(pull(outcome_var))) {
 
-            outcome_var <- pull(outcome_var)
+            outcome_var <- dplyr::pull(outcome_var)
 
             share_ti <- (1-share_control)/(n_groups - 1)
 
@@ -52,9 +53,9 @@ tau_min <- function(outcome_var,
 
             share_control_ti <- share_control/(share_control + share_ti)
 
-            variance <- var(outcome_var, na.rm = T)
+            variance <- stats::var(outcome_var, na.rm = T)
 
-            estadistico <- (qnorm(power) + qnorm(1 - significance/2))^2
+            estadistico <- (stats::qnorm(power) + stats::qnorm(1 - significance/2))^2
 
             tau_min_global <-  (estadistico*variance)/(N * share_control * (1 - share_control))
 
@@ -85,9 +86,9 @@ tau_min <- function(outcome_var,
 
         share_control_ti <- share_control/(share_control + share_ti)
 
-        variance <- var(outcome_var, na.rm = T)
+        variance <- stats::var(outcome_var, na.rm = T)
 
-        estadistico  <- (qnorm(power) + qnorm(1 - significance/2))^2
+        estadistico  <- (stats::qnorm(power) + stats::qnorm(1 - significance/2))^2
 
         tau_min_global <-  (estadistico*variance)/(N * share_control * (1 - share_control))
 
@@ -136,6 +137,7 @@ tau_min <- function(outcome_var,
 #' Pr[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
 #' population size (N), the outcome variable, power and significance
 
+#' @export
 tau_min_probability <- function(prior,
                                 N,
                                 power = 0.8,
@@ -154,7 +156,7 @@ tau_min_probability <- function(prior,
 
     variance = prior*(1-prior)
 
-    estadistico  = (qnorm(power) + qnorm(1 - significance/2))^2
+    estadistico  = (stats::qnorm(power) + stats::qnorm(1 - significance/2))^2
 
     tau_min_global =  (estadistico*variance)/(N * share_control * (1 - share_control))
 

@@ -8,6 +8,7 @@
 #' summary_statistics(data)
 #' @details This function computes the select quantiles, mean and N values of all the numeric columns of data. 
 
+#' @export
 summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
                                                    0.75, 0.9, 0.95, 1), na.rm = T) {
 
@@ -16,13 +17,13 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
     variables_numericas <- base %>% dplyr::select_if(is.numeric)
 
     estadisticas_descriptivas <- purrr::map_dfc(.x = variables_numericas,
-                                                .f = function(x) quantile(x, probs = probs, na.rm = na.rm))
+                                                .f = function(x) stats::quantile(x, probs = probs, na.rm = na.rm))
     
-    estadisticas_descriptivas$statistic<-as.character(probs) 
+    estadisticas_descriptivas$statistic<-base::as.character(probs) 
     
     estadisticas_descriptivas <-
         estadisticas_descriptivas %>% 
-        select(statistic, everything())
+        dplyr::select(statistic, everything())
 
     medias <- purrr::map_dfc(.x = variables_numericas,
                              .f = ~mean(., na.rm = na.rm) )
@@ -31,7 +32,7 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
 
     medias<-
         medias %>%
-        select(statistic, everything())
+        dplyr::select(statistic, everything())
 
 
     n_s <- purrr::map_dfc(.x = variables_numericas,
@@ -41,14 +42,14 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
     
     n_s<-
         n_s %>%
-        select(statistic, everything())
+        dplyr::select(statistic, everything())
     
     estadisticas_descriptivas<-dplyr::bind_rows(medias, n_s ,estadisticas_descriptivas)
     
     estadisticas_descriptivas<-
         estadisticas_descriptivas %>% 
-        pivot_longer(-statistic, names_to = "variable") %>%
-        pivot_wider(names_from = "statistic")
+        tidyr::pivot_longer(-statistic, names_to = "variable") %>%
+        tidyr::pivot_wider(names_from = "statistic")
     
     
 

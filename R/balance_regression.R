@@ -10,44 +10,45 @@
 #' models: 1) LPM(treatment(0,1)~X'b) and 2) LPM(treatment(0,2)~X'b). The value are the regression tables and 
 #' details of the F_test of these models.
 
+#' @export
 balance_regression <- function(data, treatment) { 
     
-    data <- data %>% dplyr::arrange(!!sym(treatment))
+    data <- data %>% dplyr::arrange(!!rlang::sym(treatment))
     
-    valores_trat <- unique(dplyr::pull(data, !!sym(treatment)))
+    valores_trat <- base::unique(dplyr::pull(data, !!rlang::sym(treatment)))
     
-    trats<-valores_trat[2:length(valores_trat)]
+    trats<-valores_trat[2:base::length(valores_trat)]
     
     bal_tables<-purrr::map(trats, function (x)
         data %>%
-            dplyr::filter(!!sym(treatment) == valores_trat[1] | !!sym(treatment) ==  !!x))
+            dplyr::filter(!!sym(treatment) == valores_trat[1] | !!rlang::sym(treatment) ==  !!x))
     
-    formula<-glue("{treatment}~ .")
-    regressions <- map(bal_tables, ~lm(as.formula(formula), data = .))
+    formula<-glue::glue("{treatment}~ .")
+    regressions <- purrr::map(bal_tables, ~stats::lm(as.formula(formula), data = .))
     
-    nombres<-str_c("Msj", trats)
+    nombres<-stringr::str_c("Msj", trats)
     
     names(regressions)<-nombres
     
-    regression_tables<-map_dfc(regressions, function(x) x %>% broom::tidy(.))
+    regression_tables<-purrr::map_dfc(regressions, function(x) x %>% broom::tidy(.))
 
-    f<-map_dfr(regressions, function(x) summary(x)$fstatistic)
-    p_values<-map_dbl(f, function(x) pf(x[1], x[2], x[3], lower.tail = F))
-    f_star <- map_dbl(f, function(x) qf(p = 0.05, df1 = x[2], df2 = x[3]))
+    f<-purrr::map_dfr(regressions, function(x) base::summary(x)$fstatistic)
+    p_values<-purrr::map_dbl(f, function(x) stats::pf(x[1], x[2], x[3], lower.tail = F))
+    f_star <- purrr::map_dbl(f, function(x) stats::qf(p = 0.05, df1 = x[2], df2 = x[3]))
     
-    f <- bind_rows(f, f_star, p_values)
+    f <- dplyr::bind_rows(f, f_star, p_values)
     
-    r_cuadrada <- map_dbl(regressions, function(x) summary(x)$r.squared)
+    r_cuadrada <- purrr::map_dbl(regressions, function(x) base::summary(x)$r.squared)
     
-    f <-bind_rows(f, r_cuadrada)
+    f <-dplyr::bind_rows(f, r_cuadrada)
 
     f <-
         f %>%
-        mutate(estadistico = c("F-statistic", "k", "n-k-1", "F_critical", "p_value", "R cuadrada")) %>%
-        select(estadistico, everything())
+        dplyr::mutate(estadistico = c("F-statistic", "k", "n-k-1", "F_critical", "p_value", "R cuadrada")) %>%
+        dplyr::select(estadistico, everything())
 
 
-    objetos <- list("regression_tables" = regression_tables, "F_test" = f)
+    objetos <- base::list("regression_tables" = regression_tables, "F_test" = f)
 
     return(objetos)
     

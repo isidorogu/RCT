@@ -1,0 +1,38 @@
+Package: RCT
+Type: Running Randomized Control Trials
+Title: Assign treatments, power calculations, balances, impact evaluation of RCTs
+Version: 1.0
+Author@R: person("Isidoro", "Garcia-Urquieta", email = "isidoro.gu@gmail.com", 
+  role =c("aut", "cre"))
+Description: This package assists in the whole process of designing and evaluating RCTs.
+    Robust treatment assignment by strata/blocks, that handles misfits; 
+    Power calculations of the minimum detectable treatment effect (See Athey, Imbens 2016);
+    Balance tables of T-test of covariates; 
+    Balance Regression: (treatment ~ X'b) with F-test of null model; 
+    Impact_evaluation: Impact evaluation regressions. This function
+    gives you the option to include control_vars, fixed effect variables,
+    cluster variables (for robust SE), multiple endogenous variables and
+    multiple heterogeneous variables (to test treatment effect heterogeneity)
+    summary_statistics: Function that creates a summary statistics table with statistics 
+    ntile_label: Same as ntile from dplyr but creates a factor variable with 
+    min and max labels attach to each category.
+License: MIT
+Encoding: UTF-8
+LazyData: true
+Imports: 
+  dplyr,
+  purrr,
+  glue, 
+  rlang,
+  tidyr, 
+  stringr,
+  MASS,
+  pracma,
+  data.table
+Suggests: 
+    ggplot2,
+    knitr,
+    rmarkdown,
+    testthat
+RoxygenNote: 7.0.2
+VignetteBuilder: knitr

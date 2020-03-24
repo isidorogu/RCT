@@ -25,6 +25,7 @@
 #' "strata": assigning the observations that couldn't be randomly assigned by strata,
 #' "NA": set the the treat observations that couldn't be randomly assigned to NA.
 
+#' @export
 treatment_assign <- function(data,
                              share_control,
                              n_t = 2,
@@ -40,7 +41,7 @@ treatment_assign <- function(data,
     
     # Creating a random variable
     set.seed(seed)
-    data$random <- runif(nrow(data))
+    data$random <- stats::runif(nrow(data))
     
     #Strata size
     data <-
@@ -79,8 +80,8 @@ treatment_assign <- function(data,
     # Strata summary
     resumen_strata <-
         data %>%
-        group_by(strata, !!!strata_varlist) %>%
-        summarise(n_strata := mean(n_strata), 
+        dplyr::group_by(strata, !!!strata_varlist) %>%
+        dplyr::summarise(n_strata := mean(n_strata), 
                   n_missfits := sum(missfit))
     
     
@@ -102,7 +103,7 @@ treatment_assign <- function(data,
                          share_control,
                          share_ti)
     
-    group_sequence<-cumsum(group_sequence)
+    group_sequence<-base::cumsum(group_sequence)
     
     data <- data.table::as.data.table(data)
     
@@ -119,16 +120,16 @@ treatment_assign <- function(data,
     
     if(missfits == "NA") { 
         
-        data <-bind_rows(data, data_missfits)
+        data <-dplyr::bind_rows(data, data_missfits)
         
 
 
     } else if (missfits == "global") {
             
 
-        data_to_assign <- data_missfits %>% ungroup()
+        data_to_assign <- data_missfits %>% dplyr::ungroup()
         
-        data_to_assign$random2<-runif(n = nrow(data_to_assign))
+        data_to_assign$random2<-stats::runif(n = nrow(data_to_assign))
         
         
         data_to_assign <-
@@ -157,7 +158,7 @@ treatment_assign <- function(data,
         
         # En cada strata reasigno a los missfits 
         data_to_assign<-data_missfits
-        data_to_assign$random2<-runif(n = nrow(data_to_assign))
+        data_to_assign$random2<-stats::runif(n = nrow(data_to_assign))
         
         data_to_assign<-
             data_to_assign %>% 
@@ -212,12 +213,13 @@ treatment_assign <- function(data,
 #' the n groups and then labels them. For each group i, the value of the ntile_label is 
 #' [min(i) - max(i)].
 
+#' @export
 ntile_label <- function(var, n, digits = 0) {
     
     secuencia<-seq(0, 1, by = 1/n)
-    cuantiles <- round(quantile(var, secuencia, na.rm = T), digits = digits)
+    cuantiles <- base::round(stats::quantile(var, secuencia, na.rm = T), digits = digits)
     
-    cuantiles2<-round(cuantiles[2:length(cuantiles)], digits = digits)
+    cuantiles2<-base::round(cuantiles[2:length(cuantiles)], digits = digits)
     label<-str_c("[", head(cuantiles, -1), " a ", cuantiles2, "]")
     
     referencia<-dplyr::tibble(grupos = seq(1, n), 
@@ -231,7 +233,7 @@ ntile_label <- function(var, n, digits = 0) {
     
     data <-
         data %>% 
-        mutate(label = fct_reorder(.f = label, .x = var))
+        dplyr::mutate(label = forcats::fct_reorder(.f = label, .x = var))
     
     return(data$label)                      
 }
