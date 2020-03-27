@@ -1,5 +1,7 @@
 # RCT
-RCT is a package that helps you focus on the statistics of the randomized control trials, rather than the heavy programming lifting. 
+RCT is a package that helps you focus on the statistics of the randomized control trials, rather than the heavy programming lifting. Any social scientist, analytics developer should use RCT when conducting Field Experiments.
+
+RCT helps you in the whole process of designing and evaluating a RCT. 
 
 Let the steps of the design be a RCT: 
 
@@ -7,41 +9,9 @@ Let the steps of the design be a RCT:
 
 This library has a function called **summary_statistics** to know the distribution of all covariates in data. 
 
-### 2. Decide the share of observations that will go to treatment 
+### 2. Decide the share of observations that will go to control group 
 
-Suppose we have N observations in data. We want to know how many observations we need to assign to control that will enable a detection of impact of treatment statistically. This process is based upon (Athey and Imbens (2016)).
-
-Lets start with the statistics to assess if the impact is significant:
-
-$$T = \frac{\bar Y_1 - \bar Y_0 - \tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})} } \sim N(0,1)  $$
-
-This means the T-statistic is distributed: 
-
-$$T = \mathcal{N}(\frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}, 1) $$
-
-Now, the probability the null will be reject at the $\alpha$ level is: 
-
-$$Pr(|T| > \Phi^{-1}(1-\frac{\alpha}{2})) = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}) $$
-
-We want the probability of rejecting the null hypothesis when it is false to be equal to $\beta$, the power. 
-
-$$\beta = \Phi (-\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}}) $$
-So, applying $\Phi^{-1}$ to both sides:
-
-$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau}{\sqrt{ \sigma^2(\frac{1}{N_T}+\frac{1}{N_c})}} $$
-
-Now, multiplying by $\frac{\sqrt N}{\sqrt N}$
-
-Finally, $share control = \frac{N_c}{N}$ and  $1-sharecontrol = \frac{N_T}{N}$: 
-
-$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt N}{\sqrt{ \sigma^2(\frac{1}{1-sharecontrol}+\frac{1}{sharecontrol})}} $$
-
-$$\Phi^{-1}(\beta) = -\Phi^{-1}(1-\frac{\alpha}{2}) + \frac{\tau \sqrt{ N sharecontrol(1-sharecontrol)}}{ \sigma} $$
-
-$$\tau = \frac {[\Phi^{-1}(\beta) + \Phi^{-1}(1-\frac{\alpha}{2})]\sigma}{\sqrt{ N sharecontrol(1-sharecontrol)}}$$
-Where $\tau$ is the minimum detectable effect. Note that, given N, $\sigma$, $\beta$ and $\alpha$, the minimum detectable effect is lowest when share control = 0.5. 
-
-Finally, note that this formula applies when comparing each treatment to control. It only has to adjust N = N control + N treati. The function **tau_min** calculares $\tau$ globally (i.e. all treatment vs control) and for each treatment. 
+The function **tau_min** calculates the minimum detectable treatment effect given power, significance level, outcome variable and number of observations.  This function computes this for any share of control observations. 
 
 ### 3. Decide which variables to use for strata building
 
