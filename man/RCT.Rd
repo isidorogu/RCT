@@ -6,7 +6,45 @@
 \title{RCT: A package for assigning and evaluating Randomized Control Trials}
 \description{
 The RCT provides three important group of functions:
-a) functions for pre-processing the design of the RCT (tau_min, summary_statistics, ntile_label)
-b) Functions for assigning treatment status and checking for balances (treatment_assign, balance_table, balance_regression)
+a) functions for pre-processing the design of the RCT 
+b) Functions for assigning treatment status and checking for balances 
 c) Function for evaluating the impact of the RCT
+}
+\details{
+RCT is a package that helps you focus on the statistics of the randomized control trials, 
+rather than the heavy programming lifting. 
+RCT helps you in the whole process of designing and evaluating a RCT. 
+1. Clean and summarise the data in which you want to randomly assign treatment 
+2. Decide the share of observations that will go to control group 
+3. Decide which variables to use for strata building
+4. Robust Random Assignment by strata/blocks
+5 Impact evaluation of all y's and heterogeneities
+To lean more about RCT, start with the vignette: browseVignettes(package = "RCT")
+}
+\section{RCT functions}{
+ 
+treatment_assign: Robust treatment assign by strata/blocks
+
+impact_eval: Automatized impact evaluation with heterogeneous treatment effects
+
+balance_table: Balance tables for any length of covariates
+
+balance_regression: LPM of treatment status against covariates with F-test
+
+tau_min: Computation of the minimum detectable effect between control & treatment units
+
+tau_min_probability: Computation of the minimum detectable effect between control & treatment units for dicotomical y-vars
+
+summary_statistics: Summary statistics of all numeric columns in your data
+
+ntile_label: Rank and divide observations in n groups, with label
+}
+
+\seealso{
+Useful links:
+https://github.com/isidorogu/RCT
+Report bugs at https://github.com/isidorogu/RCT/issues
+}
+\author{
+Isidoro Garcia Urquieta
 }
