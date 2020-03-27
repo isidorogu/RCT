@@ -44,18 +44,18 @@ fixed_effects, contols and cluster variables for clustered std errors.
 }
 \examples{
 data <- data.frame(y_1 = rnorm(n = 100, mean = 100, sd = 15), 
-                   y_2 = rnorm(n = 100, mean = 8, sd = 2), 
-                   treat = rep(c(0,1), times = 50), 
-                   heterogenous_var1 = rep(c("X_Q1", "X_Q2", "X_Q3", "X_Q4"), each = 25),
-                   cluster_var1 = rep(c(1:5), times = 20), 
-                   fixed_effect_var1 = rep(c(1,2), times = 50),
-                   control_var1 = rnorm(n = 100, mean = 20, sd = 1))
-                   
+                  y_2 = rnorm(n = 100, mean = 8, sd = 2), 
+                  treat = rep(c(0,1,2,3), each = 25), 
+                  heterogenous_var1 = rep(c("X_Q1", "X_Q2", "X_Q3", "X_Q4"), times = 25),
+                  cluster_var1 = rep(c(1:5), times = 20), 
+                  fixed_effect_var1 = rep(c(1,2), times = 50),
+                  control_var1 = rnorm(n = 100, mean = 20, sd = 1))
+
 evaluation<-impact_eval(data = data, 
-                        endogenous_vars = c("y_1", "y_2"), 
-                        treatment = "treat", 
-                        heterogenous_vars = c("heterogenous_var1"), 
-                        cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
-                        control_vars = c("control_var1"))
+                       endogenous_vars = c("y_1", "y_2"), 
+                       treatment = "treat", 
+                       heterogenous_vars = c("heterogenous_var1"), 
+                       cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
+                       control_vars = c("control_var1"))
 list2env(evaluation, envir = .GlobalEnv)
 }

@@ -42,5 +42,5 @@ Pr[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatmen
 population size (N), the outcome variable, power and significance
 }
 \examples{
-tau_min(prior = 0.05, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+tau_min_probability(0.4, N = 1000, share_control = seq(0,1,0.1), n_groups = 3)
 }

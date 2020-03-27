@@ -25,6 +25,8 @@ the mean value of each treatment (for all X's), and the p_values of the t.test o
 treatment = 0.
 }
 \examples{
-data <-data.frame(x = c(1:5), treatment = c(0,1,0,1,0))
+data <-data.frame(x1 = rnorm(n = 100, mean = 100, sd = 15), 
+                  x2=rnorm(n = 100, mean = 65), 
+                  treatment = rep(c(0,1,2,3,4), each = 20))
 balance_table(data, "treatment")
 }

@@ -11,6 +11,7 @@
 #' details of the F_test of these models.
 
 #' @export
+#' @importFrom magrittr %>%
 balance_regression <- function(data, treatment) { 
     
     data <- data %>% dplyr::arrange(!!rlang::sym(treatment))
@@ -21,7 +22,7 @@ balance_regression <- function(data, treatment) {
     
     bal_tables<-purrr::map(trats, function (x)
         data %>%
-            dplyr::filter(!!sym(treatment) == valores_trat[1] | !!rlang::sym(treatment) ==  !!x))
+            dplyr::filter(!!rlang::sym(treatment) == valores_trat[1] | !!rlang::sym(treatment) ==  !!x))
     
     formula<-glue::glue("{treatment}~ .")
     regressions <- purrr::map(bal_tables, ~stats::lm(as.formula(formula), data = .))
@@ -30,7 +31,7 @@ balance_regression <- function(data, treatment) {
     
     names(regressions)<-nombres
     
-    regression_tables<-purrr::map_dfc(regressions, function(x) x %>% broom::tidy(.))
+    regression_tables<-purrr::map_dfc(regressions, function(x) broom::tidy(x))
 
     f<-purrr::map_dfr(regressions, function(x) base::summary(x)$fstatistic)
     p_values<-purrr::map_dbl(f, function(x) stats::pf(x[1], x[2], x[3], lower.tail = F))
@@ -45,7 +46,7 @@ balance_regression <- function(data, treatment) {
     f <-
         f %>%
         dplyr::mutate(estadistico = c("F-statistic", "k", "n-k-1", "F_critical", "p_value", "R cuadrada")) %>%
-        dplyr::select(estadistico, everything())
+        dplyr::select(estadistico, dplyr::everything())
 
 
     objetos <- base::list("regression_tables" = regression_tables, "F_test" = f)

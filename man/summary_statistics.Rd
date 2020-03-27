@@ -24,7 +24,7 @@ A tibble with the Mean, N (not NA) and probs selects for each numeric column
 Creates summary statistics table of all numeric variables in data
 }
 \details{
-This function computes the select quantiles, mean and N values of all the numeric columns of data.
+This function computes the selected quantiles, mean and N values of all the numeric columns of data.
 }
 \examples{
 data <-data.frame(x = c(1:5), y = c(100, 200, 300, 410, 540), z = rep("c", 5))

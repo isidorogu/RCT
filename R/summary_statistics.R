@@ -6,9 +6,10 @@
 #' @examples 
 #' data <-data.frame(x = c(1:5), y = c(100, 200, 300, 410, 540), z = rep("c", 5))
 #' summary_statistics(data)
-#' @details This function computes the select quantiles, mean and N values of all the numeric columns of data. 
+#' @details This function computes the selected quantiles, mean and N values of all the numeric columns of data. 
 
 #' @export
+#' @importFrom magrittr %>%
 summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
                                                    0.75, 0.9, 0.95, 1), na.rm = T) {
 
@@ -22,8 +23,7 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
     estadisticas_descriptivas$statistic<-base::as.character(probs) 
     
     estadisticas_descriptivas <-
-        estadisticas_descriptivas %>% 
-        dplyr::select(statistic, everything())
+        dplyr::select(estadisticas_descriptivas, statistic, dplyr::everything())
 
     medias <- purrr::map_dfc(.x = variables_numericas,
                              .f = ~mean(., na.rm = na.rm) )
@@ -32,7 +32,7 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
 
     medias<-
         medias %>%
-        dplyr::select(statistic, everything())
+        dplyr::select(statistic, dplyr::everything())
 
 
     n_s <- purrr::map_dfc(.x = variables_numericas,
@@ -42,7 +42,7 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
     
     n_s<-
         n_s %>%
-        dplyr::select(statistic, everything())
+        dplyr::select(statistic, dplyr::everything())
     
     estadisticas_descriptivas<-dplyr::bind_rows(medias, n_s ,estadisticas_descriptivas)
     

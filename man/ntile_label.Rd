@@ -25,6 +25,8 @@ the n groups and then labels them. For each group i, the value of the ntile_labe
 [min(i) - max(i)].
 }
 \examples{
-ntile_label(var = diamonds$price, n = 10)
-diamantes<- diamantes \%>\% mutate(price_deciles = ntile_label(price, 10))
+data <- data.frame(y_1 = rbinom(n = 100, size = 1, prob = 0.3), 
+                   y_2 = rnorm(n = 100, mean = 8, sd = 2))
+data$y_1_2 <- ntile_label(data$y_1, n = 2, digits = 0) 
+data$y_2_4 <- ntile_label(data$y_2, n = 4)
 }

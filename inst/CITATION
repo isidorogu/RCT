@@ -1,0 +1,12 @@
+citHeader("To cite RCT in publications use:")
+
+citEntry(entry = "Manual",
+         title        = "Design and Evaluation of RCTs with {RCT}",
+         author       = personList(as.person("Isidoro Garcia-Urquieta")),
+         year         = "2020",
+         url          = "https://github.com/isidorogu/RCT",
+         
+         textVersion  =
+           paste("Isidoro Garcia-Urquieta",
+                 "Design and Evaluation of RCTs with {RCT}")
+)

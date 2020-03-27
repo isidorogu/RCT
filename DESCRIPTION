@@ -1,8 +1,7 @@
 Package: RCT
-Type: Running Randomized Control Trials
-Title: Assign treatments, power calculations, balances, impact evaluation of RCTs
+Title: Assign treatments, power calculations, balances, impact evaluation of experiments
 Version: 1.0
-Author@R: person("Isidoro", "Garcia-Urquieta", email = "isidoro.gu@gmail.com", 
+Authors@R: person("Isidoro", "Garcia-Urquieta", email = "isidoro.gu@gmail.com", 
   role =c("aut", "cre"))
 Description: This package assists in the whole process of designing and evaluating RCTs.
     Robust treatment assignment by strata/blocks, that handles misfits; 
@@ -16,7 +15,7 @@ Description: This package assists in the whole process of designing and evaluati
     summary_statistics: Function that creates a summary statistics table with statistics 
     ntile_label: Same as ntile from dplyr but creates a factor variable with 
     min and max labels attach to each category.
-License: MIT
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports: 
@@ -28,9 +27,13 @@ Imports:
   stringr,
   MASS,
   pracma,
-  data.table
+  lfe,
+  broom,
+  forcats,
+  magrittr,
+  qpdf,
+  ggplot2
 Suggests: 
-    ggplot2,
     knitr,
     rmarkdown,
     testthat

@@ -9,7 +9,7 @@ treatment_assign(
   share_control,
   n_t = 2,
   strata_varlist,
-  misfits = c("global", "NA", "strata"),
+  missfits = c("global", "NA", "strata"),
   seed = 1990,
   share_ti = rep(1/n_t - share_control/n_t, times = n_t),
   key
@@ -25,7 +25,7 @@ treatment_assign(
 \item{strata_varlist}{vector of categorical variables to form the strata/blocks for random assignment. 
 Should be in the form of vars(var1, var2, ...)}
 
-\item{misfits}{How to handle the misfits. Default is "global". See Carril (2016) for details.}
+\item{missfits}{How to handle the misfits. Default is "global". See Carril (2016) for details.}
 
 \item{seed}{A number used to set.seed().}
 
@@ -50,9 +50,13 @@ Finally, it has three methods availables to handle misfits (same as randtreat in
 "NA": set the the treat observations that couldn't be randomly assigned to NA.
 }
 \examples{
-assigment<-treatment_assign(data = diamonds, share_control = 0.1, n_t = 3,
-                            strata_varlist = vars(cut, color), missfits = "strata", 
-                            seed = 1990, key = "z")
+data<-data.frame(key = c(1:100), 
+                 ing_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 25), 
+                 age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 25))
+assigment<-treatment_assign(data = data, share_control = 0.1, n_t = 3,
+                            strata_varlist = dplyr::vars(ing_quartile, 
+                            age_quartile), missfits = "strata", 
+                            seed = 1990, key = "key")
 list2env(assigment, envir = .GlobalEnv)
 table(data$treat, useNA = "ifany")
 prop.table(table(data$treat, useNA = "ifany"))

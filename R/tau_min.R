@@ -11,12 +11,15 @@
 #' the minimum detectable difference between control and all treatments together (tau_min_global),
 #' the minimum detectable difference between control and each treatment (tau_min_each_treat)
 #' @examples 
-#' tau_min(outcome_var = data$Y, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+#'data <- data.frame(y_1 = rbinom(n = 100, size = 1, prob = 0.3), 
+#'                   y_2 = rnorm(n = 100, mean = 8, sd = 2))
+#' tau_min(data$y_1, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
 #' @details This function calculates the minimum difference that could show significant 
 #' E[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
 #' population size (N), the outcome variable, power and significance
 
 #' @export
+#' @importFrom magrittr %>%
 tau_min <- function(outcome_var,
                     N,
                     power = 0.8,
@@ -33,17 +36,8 @@ tau_min <- function(outcome_var,
     else if (N < 0) {
         stop("N must be postive")
     }
-    else {
+    else if ("data.frame" %in% class(outcome_var) ){
 
-    if ("data.frame" %in% class(outcome_var)) {
-
-        if(ncol(outcome_var)>1) {
-
-            stop("outcome_var must be a vector")
-
-        }
-
-        else if ("numeric" %in% class(pull(outcome_var))) {
 
             outcome_var <- dplyr::pull(outcome_var)
 
@@ -76,48 +70,46 @@ tau_min <- function(outcome_var,
 
             return(tau_min_DT)
 
-        } else if (!("numeric" %in% class(pull(outcome_var)))) {
-            stop("outcome_var must be numeric")
-        }
-    } else if ("numeric" %in% class(outcome_var)) {
+    }  else {
         share_ti <- (1-share_control)/(n_groups - 1)
-
+        
         N_each_treat_comp <- N*share_control+N*share_ti
-
+        
         share_control_ti <- share_control/(share_control + share_ti)
-
+        
         variance <- stats::var(outcome_var, na.rm = T)
-
-        estadistico  <- (stats::qnorm(power) + stats::qnorm(1 - significance/2))^2
-
+        
+        estadistico <- (stats::qnorm(power) + stats::qnorm(1 - significance/2))^2
+        
         tau_min_global <-  (estadistico*variance)/(N * share_control * (1 - share_control))
-
+        
         tau_min_each_trat <- tau_min_global*(N * share_control * (1 - share_control))/
             (N_each_treat_comp * share_control_ti * (1 - share_control_ti))
-
-
+        
+        
         tau_min_DT <- data.frame(share_control = share_control,
-                             share_ti = share_ti,
-                             share_treat = share_ti*(n_groups-1),
-                             N = N,
-                             N_control = N*share_control,
-                             N_treat = (n_groups-1)*share_ti*N,
-                             N_ti = share_ti*N,
-                             tau_min_global = sqrt(tau_min_global),
-                             tau_min_each_treat = sqrt(tau_min_each_trat))
-
-
+                                 share_ti = share_ti,
+                                 share_treat = share_ti*(n_groups-1),
+                                 N = N,
+                                 N_control = N*share_control,
+                                 N_treat = (n_groups-1)*share_ti*N,
+                                 N_ti = share_ti*N,
+                                 tau_min_global = sqrt(tau_min_global),
+                                 tau_min_each_treat = sqrt(tau_min_each_trat))
+        
+        
         return(tau_min_DT)
-
-    } else {
-
-        stop("outcome_var is not numeric" )
-
-        }
+        
     }
-}
+        
+    }
+    }
+    
+    
+        
+        
 
-}
+
 
 #' Computation of the minimum detectable difference between control group and each treatment for a dicotomical variable
 #' @param prior Pr(Y=1). 
@@ -132,12 +124,12 @@ tau_min <- function(outcome_var,
 #' the minimum detectable difference between control and all treatments together (tau_min_global),
 #' the minimum detectable difference between control and each treatment (tau_min_each_treat)
 #' @examples 
-#' tau_min(prior = 0.05, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+#' tau_min_probability(0.4, N = 1000, share_control = seq(0,1,0.1), n_groups = 3)
 #' @details This function calculates the minimum difference that could show significant 
 #' Pr[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment), given the 
 #' population size (N), the outcome variable, power and significance
-
 #' @export
+#' @importFrom magrittr %>%
 tau_min_probability <- function(prior,
                                 N,
                                 power = 0.8,
@@ -164,7 +156,7 @@ tau_min_probability <- function(prior,
         (N_each_treat_comp * share_control_ti * (1 - share_control_ti))
 
 
-    tau_min_DT <- tibble(share_control = share_control,
+    tau_min_DT <- data.frame(share_control = share_control,
                          share_ti = share_ti,
                          share_treat = share_ti*(n_groups-1),
                          N = N,

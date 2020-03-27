@@ -42,5 +42,7 @@ E[Y(1)-Y(0)] = tau, between any two given groups (e.g. control vs each treatment
 population size (N), the outcome variable, power and significance
 }
 \examples{
-tau_min(outcome_var = data$Y, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
+data <- data.frame(y_1 = rbinom(n = 100, size = 1, prob = 0.3), 
+                  y_2 = rnorm(n = 100, mean = 8, sd = 2))
+tau_min(data$y_1, N = nrow(data), share_control = seq(0,1,0.1), n_groups = 3)
 }
