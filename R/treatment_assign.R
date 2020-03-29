@@ -12,9 +12,9 @@
 #' @return A list: "data" = the data with key, treat, strata, misfit column., 
 #' "summary_strata" = A summary tibble with the membership of each strata and its size.
 #' @examples 
-#' data<-data.frame(key = c(1:100), 
-#'                  ing_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 25), 
-#'                  age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 25))
+#' data<-data.frame(key = c(1:1000), 
+#'                  ing_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 250), 
+#'                  age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 250))
 #' assigment<-treatment_assign(data = data, share_control = 0.1, n_t = 3,
 #'                             strata_varlist = dplyr::vars(ing_quartile, 
 #'                             age_quartile), missfits = "strata", 
@@ -145,9 +145,10 @@ treatment_assign <- function(data,
         
         data_to_assign <- data_missfits %>% dplyr::ungroup()
         
+        random2<-NULL
+        
         data_to_assign$random2<-stats::runif(nrow(data_to_assign))
         
-        random2<-NULL
         
         data_to_assign <-
             data_to_assign %>%
@@ -157,8 +158,8 @@ treatment_assign <- function(data,
 
         for (i in 1:(n_t+2)) {
             
-            data_to_assign$treat[data_to_assign$strata_index/data_to_assign$n_strata <= group_sequence[i+1] & 
-                                     data_to_assign$strata_index/data_to_assign$n_strata > group_sequence[i]]<-i-1
+            data_to_assign$treat[data_to_assign$index/base::nrow(data_to_assign) <= group_sequence[i+1] & 
+                                     data_to_assign$index/base::nrow(data_to_assign) > group_sequence[i]]<-i-1
             
             
         }
@@ -191,8 +192,8 @@ treatment_assign <- function(data,
         
         for (i in 1:(n_t+2)) {
             
-            data_to_assign$treat[data_to_assign$strata_index/data_to_assign$n_strata <= group_sequence[i+1] & 
-                                     data_to_assign$strata_index/data_to_assign$n_strata > group_sequence[i]]<-i-1
+            data_to_assign$treat[data_to_assign$index/data_to_assign$n_strata_missfit <= group_sequence[i+1] & 
+                                     data_to_assign$index/data_to_assign$n_strata_missfit > group_sequence[i]]<-i-1
         }
         
         
