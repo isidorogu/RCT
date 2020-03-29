@@ -17,6 +17,7 @@
 #' @importFrom magrittr %>%
 balance_table<-function(data, treatment) {
   
+  variables<-NULL
   data <- data %>% dplyr::arrange(!!rlang::sym(treatment))
   
   valores_trat <- base::unique(dplyr::pull(data, !!rlang::sym(treatment)))
@@ -51,7 +52,10 @@ balance_table<-function(data, treatment) {
   
   bal_tables<-
     bal_tables %>% 
-    dplyr::select(all_of(variables_nombres[1]), all_of(medias_control[1]), all_of(medias_trat), all_of(p_values))
+    dplyr::select(tidyselect::all_of(variables_nombres[1]), 
+                  tidyselect::all_of(medias_control[1]), 
+                  tidyselect::all_of(medias_trat), 
+                  tidyselect::all_of(p_values))
     
   
   

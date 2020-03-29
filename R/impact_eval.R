@@ -64,6 +64,10 @@ impact_eval <- function(data, endogenous_vars, treatment,
     
     matrix<-base::expand.grid(heterogenous_vars, endogenous_vars)
     
+    Var1<-NULL
+    Var2<-NULL
+    .<-NULL
+    fit<-NULL
     matrix<-
       matrix %>%
       dplyr::rename(variables_heterogeneas = Var1,
@@ -78,7 +82,7 @@ impact_eval <- function(data, endogenous_vars, treatment,
   ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
                           function(x, y) data %>%
                             dplyr::group_by(!!rlang::sym(x)) %>% dplyr::do(fit = lfe::felm(stats::as.formula(y),
-                                                                      data = .)) %>% broom::tidy(. , fit) )
+                                                                      data = .)) %>% broom::tidy(., fit) )
 
   base::names(ITT_het)<-stringr::str_c(endogenous_vars_final, heterogenous_vars_final, sep = "_")
 

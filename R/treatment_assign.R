@@ -48,19 +48,23 @@ treatment_assign <- function(data,
     data <- data %>% dplyr::arrange(!!rlang::sym(key))
     
     # Creating a random variable
+    random<-NULL
     set.seed(seed)
     data$random <- stats::runif(nrow(data))
     
     #Strata size
+    n_strata<-NULL
     data <-
         data %>%
         dplyr::group_by(!!!strata_varlist) %>%
-        dplyr::mutate(n_strata := n())
+        dplyr::mutate(n_strata := dplyr::n())
     
     # Strata id
+    strata<-NULL
     data$strata<-dplyr::group_indices(data, data$n_strata)
     
     # Row number on each strata
+    strata_index<-NULL
     data <- data %>%
         dplyr::group_by(strata) %>%
         dplyr::arrange(strata, random) %>%
@@ -76,7 +80,9 @@ treatment_assign <- function(data,
     
     divisor<-pracma::Lcm(denominator_control, denominator_treat)
     
-    
+    row_missfit<-NULL
+    num_missfits<-NULL
+    missfit <- NULL
     data <- 
         data %>%
         dplyr::group_by(strata) %>% 
@@ -86,6 +92,7 @@ treatment_assign <- function(data,
                       missfit = dplyr::if_else(strata_index <= row_missfit, 0 , 1))
     
     # Strata summary
+    n_missfits<-NULL
     resumen_strata <-
         data %>%
         dplyr::group_by(strata, !!!strata_varlist) %>%
@@ -103,7 +110,7 @@ treatment_assign <- function(data,
     data <-
         data %>%
         dplyr::group_by(strata) %>%
-        dplyr::mutate(n_strata = n())
+        dplyr::mutate(n_strata = dplyr::n())
     
     
     # Treatment sequence, if equal
@@ -115,6 +122,7 @@ treatment_assign <- function(data,
     
     data$treat<-rep(999, times = base::nrow(data))
     
+    treat<-NULL
     
     for (i in 1:(n_t+2)) {
         
@@ -137,17 +145,16 @@ treatment_assign <- function(data,
         
         data_to_assign <- data_missfits %>% dplyr::ungroup()
         
-        data_to_assign$random2<-stats::runif(n = nrow(data_to_assign))
+        data_to_assign$random2<-stats::runif(nrow(data_to_assign))
         
+        random2<-NULL
         
         data_to_assign <-
             data_to_assign %>%
             dplyr::arrange(random2) %>%
             dplyr::mutate(index = dplyr::row_number())
         
-        data_to_assign$treat<-999
-        
-        
+
         for (i in 1:(n_t+2)) {
             
             data_to_assign$treat[data_to_assign$strata_index/data_to_assign$n_strata <= group_sequence[i+1] & 
@@ -166,12 +173,12 @@ treatment_assign <- function(data,
         
         # En cada strata reasigno a los missfits 
         data_to_assign<-data_missfits
-        data_to_assign$random2<-stats::runif(n = nrow(data_to_assign))
+        data_to_assign$random2<-stats::runif(nrow(data_to_assign))
         
         data_to_assign<-
             data_to_assign %>% 
             dplyr::group_by(strata) %>% 
-            dplyr::mutate(n_strata_missfit = n())
+            dplyr::mutate(n_strata_missfit = dplyr::n())
         
         data_to_assign <-
             data_to_assign %>%

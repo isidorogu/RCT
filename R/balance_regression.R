@@ -9,10 +9,11 @@
 #' columns in data. For instance, if treatment column has values of (0,1,2), balance_regression will run two 
 #' models: 1) LPM(treatment(0,1)~X'b) and 2) LPM(treatment(0,2)~X'b). The value are the regression tables and 
 #' details of the F_test of these models.
-
 #' @export
 #' @importFrom magrittr %>%
 balance_regression <- function(data, treatment) { 
+    
+    estadistico<-NULL
     
     data <- data %>% dplyr::arrange(!!rlang::sym(treatment))
     

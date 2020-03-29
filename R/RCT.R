@@ -40,6 +40,6 @@
 #' https://github.com/isidorogu/RCT
 #' Report bugs at https://github.com/isidorogu/RCT/issues
 
-#' @author Isidoro Garcia Urquieta 
+#' @author Isidoro Garcia Urquieta, isidoro.gu@@gmail.com
 
 NULL

@@ -16,6 +16,8 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
     base <- data %>% dplyr::ungroup()
 
     variables_numericas <- base %>% dplyr::select_if(is.numeric)
+    
+    statistic<-NULL
 
     estadisticas_descriptivas <- purrr::map_dfc(.x = variables_numericas,
                                                 .f = function(x) stats::quantile(x, probs = probs, na.rm = na.rm))
