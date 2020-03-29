@@ -119,11 +119,10 @@ treatment_assign <- function(data,
                          share_ti)
     
     group_sequence<-base::cumsum(group_sequence)
-    
-    data$treat<-rep(999, times = base::nrow(data))
-    
+
     treat<-NULL
     
+
     for (i in 1:(n_t+2)) {
         
         data$treat[data$strata_index/data$n_strata <= group_sequence[i+1] & 
@@ -188,8 +187,7 @@ treatment_assign <- function(data,
             dplyr::mutate(index = dplyr::row_number())
         
         
-        data_to_assign$treat<-999
-        
+
         for (i in 1:(n_t+2)) {
             
             data_to_assign$treat[data_to_assign$index/data_to_assign$n_strata_missfit <= group_sequence[i+1] & 

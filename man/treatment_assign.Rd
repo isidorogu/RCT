@@ -50,9 +50,9 @@ Finally, it has three methods availables to handle misfits (same as randtreat in
 "NA": set the the treat observations that couldn't be randomly assigned to NA.
 }
 \examples{
-data<-data.frame(key = c(1:100), 
-                 ing_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 25), 
-                 age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 25))
+data<-data.frame(key = c(1:1000), 
+                 ing_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 250), 
+                 age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 250))
 assigment<-treatment_assign(data = data, share_control = 0.1, n_t = 3,
                             strata_varlist = dplyr::vars(ing_quartile, 
                             age_quartile), missfits = "strata", 
