@@ -31,11 +31,12 @@ Imports:
   broom,
   forcats,
   magrittr,
-  qpdf,
-  ggplot2
+  ggplot2, 
+  tidyselect
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    qpdf
 RoxygenNote: 7.0.2
 VignetteBuilder: knitr

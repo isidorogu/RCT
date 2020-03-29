@@ -1,6 +1,6 @@
-#' RCT: A package for assigning and evaluating Randomized Control Trials
+#' Designing, random assigning and evaluating Randomized Control Trials
 #' 
-#' The RCT provides three important group of functions:
+#' RCT provides three important group of functions:
 #' a) functions for pre-processing the design of the RCT 
 
 #' b) Functions for assigning treatment status and checking for balances 
@@ -10,7 +10,7 @@
 #' @docType package
 #' @name RCT
 #' @details 
-#' RCT is a package that helps you focus on the statistics of the randomized control trials, 
+#' RCT  helps you focus on the statistics of the randomized control trials, 
 #' rather than the heavy programming lifting. 
 #' RCT helps you in the whole process of designing and evaluating a RCT. 
 #' 1. Clean and summarise the data in which you want to randomly assign treatment 
