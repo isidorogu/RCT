@@ -61,6 +61,7 @@ balance_table<-function(data, treatment) {
                     tidyselect::all_of(medias_trat), 
                     tidyselect::all_of(p_values))
     
+    return(bal_tables)
 }
 
 
