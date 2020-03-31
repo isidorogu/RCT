@@ -54,15 +54,16 @@ treatment_assign <- function(data,
     
     #Strata size
     n_strata<-NULL
+    strata<-NULL
+    
     data <-
         data %>%
         dplyr::group_by(!!!strata_varlist) %>%
         dplyr::mutate(n_strata := dplyr::n())
     
-    # Strata id
-    strata<-NULL
-    data$strata<-dplyr::group_indices(data, data$n_strata)
-    
+    # strata id 
+    data$strata<-dplyr::group_indices(data)
+
     # Row number on each strata
     strata_index<-NULL
     data <- data %>%
@@ -135,10 +136,10 @@ treatment_assign <- function(data,
     
     if(missfits == "NA") { 
         
+        data_missfits$treat<-NA
         data <-dplyr::bind_rows(data, data_missfits)
         
-        
-        
+
     } else if (missfits == "global") {
         
         

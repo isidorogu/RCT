@@ -33,14 +33,33 @@
 #' @importFrom magrittr %>%
 impact_eval <- function(data, endogenous_vars, treatment, 
                          heterogenous_vars, cluster_vars = "0", 
-                         fixed_effect_vars = "0", control_vars = "0") {
+                         fixed_effect_vars = "0", control_vars) {
   
   # Poniendo como sumas los fixed effects, cluster std errors, controles 
-  controles_formula<- stringr::str_c(control_vars, collapse = "+")
   cluster_formula<- stringr::str_c(cluster_vars, collapse = "+" )
   fixed_effect_formula<- stringr::str_c(fixed_effect_vars, collapse = "+")
   
-  formula_sin_y <-stringr::str_c("{.}~factor({treatment}) + ", 
+  if (missing(control_vars)) {
+    
+    formula_sin_y <-stringr::str_c("{.}~factor({treatment}) ",
+                                   " | ", 
+                                   fixed_effect_formula, 
+                                   " | ", 
+                                   " 0 | ", 
+                                   cluster_formula)
+    
+    formulas<-purrr::map_chr(endogenous_vars  , ~glue::glue(formula_sin_y))
+    
+    ITT <- purrr::map(formulas,  ~lfe::felm(stats::as.formula(.), data = data ) %>% broom::tidy(.) )
+    
+    base::names(ITT)<-endogenous_vars
+    
+    
+  } else {
+    
+    controles_formula<- stringr::str_c(control_vars, collapse = "+")
+    
+   formula_sin_y <-stringr::str_c("{.}~factor({treatment}) + ", 
                        controles_formula, 
                        " | ", 
                        fixed_effect_formula, 
@@ -53,6 +72,8 @@ impact_eval <- function(data, endogenous_vars, treatment,
   ITT <- purrr::map(formulas,  ~lfe::felm(stats::as.formula(.), data = data ) %>% broom::tidy(.) )
   
   base::names(ITT)<-endogenous_vars
+  
+  }
   
   if (missing(heterogenous_vars)) { 
     

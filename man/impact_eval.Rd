@@ -11,7 +11,7 @@ impact_eval(
   heterogenous_vars,
   cluster_vars = "0",
   fixed_effect_vars = "0",
-  control_vars = "0"
+  control_vars
 )
 }
 \arguments{

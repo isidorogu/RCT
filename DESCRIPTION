@@ -32,7 +32,7 @@ Imports:
   forcats,
   magrittr,
   ggplot2, 
-  tidyselect
+  tidyselect (>= 1.0.0)
 Suggests: 
     knitr,
     rmarkdown,
