@@ -11,7 +11,7 @@ b) Functions for assigning treatment status and checking for balances
 c) Function for evaluating the impact of the RCT
 }
 \details{
-RCT  helps you focus on the statistics of the randomized control trials, 
+RCT helps you focus on the statistics of the randomized control trials, 
 rather than the heavy programming lifting. 
 RCT helps you in the whole process of designing and evaluating a RCT. 
 1. Clean and summarise the data in which you want to randomly assign treatment 

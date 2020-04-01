@@ -44,7 +44,7 @@ Robust treatment assignment by strata/blocks
 \details{
 This function creates a variable that indicates the treatment status. The random 
 assignment is made by strata/blocks. It can handle equal or unequal treatment shares. 
-Finally, it has three methods availables to handle misfits (same as randtreat in STATA):
+Finally, it has three methods available to handle misfits (same as randtreat in STATA):
 "global": assigning the observations that couldn't be randomly assigned globally, 
 "strata": assigning the observations that couldn't be randomly assigned by strata,
 "NA": set the the treat observations that couldn't be randomly assigned to NA.

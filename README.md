@@ -1,5 +1,5 @@
 # RCT
-RCT is a package that helps you focus on the statistics of the randomized control trials, rather than the heavy programming lifting. Any social scientist, analytics developer should use RCT when conducting Field Experiments.
+RCT helps you focus on the statistics of the randomized control trials, rather than the heavy programming lifting. Any social scientist should use RCT when conducting Field Experiments.
 
 RCT helps you in the whole process of designing and evaluating a RCT. 
 
@@ -15,7 +15,7 @@ The function **tau_min** calculates the minimum detectable treatment effect give
 
 ### 3. Decide which variables to use for strata building
 
-Prior to random assigment, one has to decide which **categorical** variables to build blocks. Hence, the blocks or strata are the group that combine every categorical variable. The cardinality of this groups are all the possible combinations of the chose categorial variables. 
+Prior to random assignment, one has to decide which **categorical** variables to build blocks. Hence, the blocks or strata are the group that combine every categorical variable. The cardinality of this groups are all the possible combinations of the chose categorical variables. 
 
 To build categorical variables in a powerful way, function **n_tile_label** divides variables in the decided n groups, putting label of the range of each category to the variable. 
 
@@ -52,3 +52,6 @@ For each combination the model run is:
 
 $$Y_i = \alpha + \tau treatment + \epsilon $$
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/isidorogu/RCT.svg?branch=master)](https://travis-ci.org/isidorogu/RCT)
+<!-- badges: end -->

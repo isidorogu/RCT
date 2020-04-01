@@ -39,7 +39,7 @@ Impact Evaluation of Treatment Effects
 \details{
 This function carries out the evaluation of treatment effects on endogenous variables. 
 It automatically runs the regressions of all the endogenous_vars supplied & all the combinations 
-of endogenous_vars and heterogenous_vars. Aditionally, the function has the option of include 
+of endogenous_vars and heterogenous_vars. Additionally, the function has the option of include 
 fixed_effects, contols and cluster variables for clustered std errors.
 }
 \examples{
