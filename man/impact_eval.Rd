@@ -30,7 +30,7 @@ impact_eval(
 \item{control_vars}{Vector of variables to control for in the evaluation. Default is without controls}
 }
 \value{
-A list of regression tables. The names of the list are the same as the endogenous variables.
+impact_eval() returns a list of regression tables. The names of the list are the same as the endogenous variables.
 for heterogeneities the names are endogenous_var_heterogenous_var
 }
 \description{
@@ -57,5 +57,4 @@ evaluation<-impact_eval(data = data,
                        heterogenous_vars = c("heterogenous_var1"), 
                        cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
                        control_vars = c("control_var1"))
-list2env(evaluation, envir = .GlobalEnv)
 }

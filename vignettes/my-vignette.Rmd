@@ -1,5 +1,5 @@
 ---
-title: "RCT-vignette"
+title: "Randomized Control Trials Design, Assignment and Evaluation"
 author: "Isidoro Garcia Urquieta"
 output: rmarkdown::html_vignette
 vignette: >

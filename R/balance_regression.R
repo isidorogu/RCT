@@ -1,4 +1,4 @@
-#' Runs a LPM of treatment status against all covariates (treatment~X'B). 
+#' balance_regression() Runs a LPM of treatment status against all covariates (treatment~X'B). 
 #' @param data A data.frame, tibble or data.table
 #' @param treatment a string with treatment status column
 #' @return A list: "regression_tables" = regression output of treatment~X'B, "F_test" = table with the F tests of each regression

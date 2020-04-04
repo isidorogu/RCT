@@ -2,7 +2,7 @@
 % Please edit documentation in R/treatment_assign.R
 \name{ntile_label}
 \alias{ntile_label}
-\title{Rank observations in n groups, with labels}
+\title{ntile_label() ranks observations in n groups, with labels}
 \usage{
 ntile_label(var, n, digits = 0)
 }
@@ -17,7 +17,7 @@ ntile_label(var, n, digits = 0)
 A ordered factor vector of each n group. The value has the form of [min(n_i) - max(n_i)]
 }
 \description{
-Rank observations in n groups, with labels
+ntile_label() ranks observations in n groups, with labels
 }
 \details{
 n_tile_label is very similar to ntile from dplyr. But n_tile_label creates

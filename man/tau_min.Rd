@@ -2,7 +2,7 @@
 % Please edit documentation in R/tau_min.R
 \name{tau_min}
 \alias{tau_min}
-\title{Computation of the minimum detectable difference between control group and each treatment}
+\title{tau_min() computes the minimum detectable difference between control group and each treatment}
 \usage{
 tau_min(
   outcome_var,
@@ -34,7 +34,7 @@ the minimum detectable difference between control and all treatments together (t
 the minimum detectable difference between control and each treatment (tau_min_each_treat)
 }
 \description{
-Computation of the minimum detectable difference between control group and each treatment
+tau_min() computes the minimum detectable difference between control group and each treatment
 }
 \details{
 This function calculates the minimum difference that could show significant 

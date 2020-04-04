@@ -2,7 +2,7 @@
 % Please edit documentation in R/summary_statistics.R
 \name{summary_statistics}
 \alias{summary_statistics}
-\title{Creates summary statistics table of all numeric variables in data}
+\title{summary_statistics() Creates summary statistics table of all numeric variables in data}
 \usage{
 summary_statistics(
   data,
@@ -21,7 +21,7 @@ summary_statistics(
 A tibble with the Mean, N (not NA) and probs selects for each numeric column
 }
 \description{
-Creates summary statistics table of all numeric variables in data
+summary_statistics() Creates summary statistics table of all numeric variables in data
 }
 \details{
 This function computes the selected quantiles, mean and N values of all the numeric columns of data.

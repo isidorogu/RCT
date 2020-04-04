@@ -1,4 +1,4 @@
-#' Robust treatment assignment by strata/blocks
+#' treatmen_assign() carries out robust treatment assignment by strata/blocks
 #' @param data A data.frame, tibble or data.table
 #' @param share_control share of the observations assigned to control group
 #' @param n_t Number of treatments groups
@@ -19,7 +19,6 @@
 #'                             strata_varlist = dplyr::vars(ing_quartile, 
 #'                             age_quartile), missfits = "strata", 
 #'                             seed = 1990, key = "key")
-#' list2env(assigment, envir = .GlobalEnv)
 #' table(data$treat, useNA = "ifany")
 #' prop.table(table(data$treat, useNA = "ifany"))
 #' @details This function creates a variable that indicates the treatment status. The random 
@@ -214,7 +213,7 @@ treatment_assign <- function(data,
 
 
 
-#' Rank observations in n groups, with labels
+#' ntile_label() ranks observations in n groups, with labels
 #' @param var The variable wished to be ntile_label 
 #' @param n rank the variable in n groups 
 #' @param digits How many digits to include in the label 

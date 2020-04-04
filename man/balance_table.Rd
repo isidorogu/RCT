@@ -18,7 +18,7 @@ A tibble with Mean_value of each treatment status and p_values
 Creates balance table for the X variables across treatment status
 }
 \details{
-This function performs t.test(X~treatment) for each X column in data. Every value of 
+balance_table() performs t.test(X~treatment) for each X column in data. Every value of 
 treatment i.e 1,2,3,...N is compared against control value (0) or the first value of the treatment
 column. For instance, If treatment column has values of (0,1,2,3), balance_table will return: 
 the mean value of each treatment (for all X's), and the p_values of the t.test of (1,2,3) against

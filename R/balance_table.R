@@ -7,7 +7,7 @@
 #'                   x2=rnorm(n = 100, mean = 65), 
 #'                   treatment = rep(c(0,1,2,3,4), each = 20))
 #' balance_table(data, "treatment")
-#' @details This function performs t.test(X~treatment) for each X column in data. Every value of 
+#' @details balance_table() performs t.test(X~treatment) for each X column in data. Every value of 
 #' treatment i.e 1,2,3,...N is compared against control value (0) or the first value of the treatment
 #' column. For instance, If treatment column has values of (0,1,2,3), balance_table will return: 
 #' the mean value of each treatment (for all X's), and the p_values of the t.test of (1,2,3) against

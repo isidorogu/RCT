@@ -1,4 +1,4 @@
-#' Computation of the minimum detectable difference between control group and each treatment
+#' tau_min() computes the minimum detectable difference between control group and each treatment
 #' @param outcome_var the variable for which you wish to test the impact of treatment 
 #' @param N number of observations in the RCT, usually nrow(data)
 #' @param significance The level of significance of the test Pr(Reject H_0 | H_0 False). Default is 0.05
@@ -111,7 +111,7 @@ tau_min <- function(outcome_var,
 
 
 
-#' Computation of the minimum detectable difference between control group and each treatment for a dicotomical variable
+#' tau_min_probability() computes the minimum detectable difference between control group and each treatment for a dicotomical variable
 #' @param prior Pr(Y=1). 
 #' @param N number of observations in the RCT, usually nrow(data)
 #' @param significance The level of significance of the test Pr(Reject H_0 | H_0 False). Default is 0.05

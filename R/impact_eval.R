@@ -6,7 +6,7 @@
 #' @param cluster_vars Vector of variables to cluster the standard errors. Default is without clustered std errors
 #' @param fixed_effect_vars Vector of variables to add as fixed effects. Default is without fixed effects
 #' @param control_vars Vector of variables to control for in the evaluation. Default is without controls
-#' @return A list of regression tables. The names of the list are the same as the endogenous variables.
+#' @return impact_eval() returns a list of regression tables. The names of the list are the same as the endogenous variables.
 #' for heterogeneities the names are endogenous_var_heterogenous_var
 #' @examples 
 #' data <- data.frame(y_1 = rnorm(n = 100, mean = 100, sd = 15), 
@@ -23,7 +23,6 @@
 #'                        heterogenous_vars = c("heterogenous_var1"), 
 #'                        cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
 #'                        control_vars = c("control_var1"))
-#' list2env(evaluation, envir = .GlobalEnv)
 #' @details This function carries out the evaluation of treatment effects on endogenous variables. 
 #' It automatically runs the regressions of all the endogenous_vars supplied & all the combinations 
 #' of endogenous_vars and heterogenous_vars. Additionally, the function has the option of include 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/tau_min.R
 \name{tau_min_probability}
 \alias{tau_min_probability}
-\title{Computation of the minimum detectable difference between control group and each treatment for a dicotomical variable}
+\title{tau_min_probability() computes the minimum detectable difference between control group and each treatment for a dicotomical variable}
 \usage{
 tau_min_probability(
   prior,
@@ -34,7 +34,7 @@ the minimum detectable difference between control and all treatments together (t
 the minimum detectable difference between control and each treatment (tau_min_each_treat)
 }
 \description{
-Computation of the minimum detectable difference between control group and each treatment for a dicotomical variable
+tau_min_probability() computes the minimum detectable difference between control group and each treatment for a dicotomical variable
 }
 \details{
 This function calculates the minimum difference that could show significant 

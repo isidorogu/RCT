@@ -2,7 +2,7 @@
 % Please edit documentation in R/balance_regression.R
 \name{balance_regression}
 \alias{balance_regression}
-\title{Runs a LPM of treatment status against all covariates (treatment~X'B).}
+\title{balance_regression() Runs a LPM of treatment status against all covariates (treatment~X'B).}
 \usage{
 balance_regression(data, treatment)
 }
@@ -15,7 +15,7 @@ balance_regression(data, treatment)
 A list: "regression_tables" = regression output of treatment~X'B, "F_test" = table with the F tests of each regression
 }
 \description{
-Runs a LPM of treatment status against all covariates (treatment~X'B).
+balance_regression() Runs a LPM of treatment status against all covariates (treatment~X'B).
 }
 \details{
 This functions runs a Linear Probability model of each treatment group & control on all the 

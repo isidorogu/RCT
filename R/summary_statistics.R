@@ -1,4 +1,4 @@
-#' Creates summary statistics table of all numeric variables in data 
+#' summary_statistics() Creates summary statistics table of all numeric variables in data 
 #' @param data A data.frame, tibble or data.table
 #' @param probs The quantiles to compute. Default is c(0, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 1)
 #' @param na.rm whether to exclude NA's from calculations

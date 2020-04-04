@@ -40,6 +40,9 @@ summary_statistics: Summary statistics of all numeric columns in your data
 ntile_label: Rank and divide observations in n groups, with label
 }
 
+\references{
+Athey, Susan, and Guido W. Imbens (2017) "The Econometrics Randomized Experiments". Handbook of economic field experiments. \url{https://arxiv.org/abs/1607.00698}
+}
 \seealso{
 Useful links:
 https://github.com/isidorogu/RCT
