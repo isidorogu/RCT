@@ -2,7 +2,7 @@
 % Please edit documentation in R/treatment_assign.R
 \name{treatment_assign}
 \alias{treatment_assign}
-\title{treatmen_assign() carries out robust treatment assignment by strata/blocks}
+\title{treatment_assign() carries out robust treatment assignment by strata/blocks}
 \usage{
 treatment_assign(
   data,
@@ -39,7 +39,7 @@ A list: "data" = the data with key, treat, strata, misfit column.,
 "summary_strata" = A summary tibble with the membership of each strata and its size.
 }
 \description{
-treatmen_assign() carries out robust treatment assignment by strata/blocks
+treatment_assign() carries out robust treatment assignment by strata/blocks
 }
 \details{
 This function creates a variable that indicates the treatment status. The random 

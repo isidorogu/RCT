@@ -1,23 +1,15 @@
 ## Test environments
-* local Windows install, R 3.6.2
-* ubuntu 16.04 (on travis-ci), R 3.6.2
-* win-builder(devel and release)
-* R-hub windows-x86_64-devel (r-devel)
-* R-hub ubuntu-gcc-release (r-release)
-* R-hub fedora-clang-devel (r-devel)
+* local Windows install, R 4.0.0
+* R-hub Ubuntu Linux 16.04 LTS, R-release, GCC
 
 
 ## R CMD check results
-There were no ERRORs or WARNINGs. 
-
-There was 1 NOTE:
-checking CRAN incoming feasibility ... NOTE
-* Maintainer: ‘Isidoro Garcia-Urquieta <isidoro.gu@gmail.com>’
-
-* New submission
-
- 0 errors ✔ | 0 warnings ✔ | 1 note ✖
-
+There were no ERRORs or WARNINGs or NOTEs. 
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package
+
+## Resubmission
+This is a resubmission. In this version I have:
+
+*Changed balance_regression.R to ensure compatibility with upcoming dplyr 1.0.0

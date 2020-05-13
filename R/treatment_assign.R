@@ -1,4 +1,4 @@
-#' treatmen_assign() carries out robust treatment assignment by strata/blocks
+#' treatment_assign() carries out robust treatment assignment by strata/blocks
 #' @param data A data.frame, tibble or data.table
 #' @param share_control share of the observations assigned to control group
 #' @param n_t Number of treatments groups
@@ -222,7 +222,7 @@ treatment_assign <- function(data,
 #' data <- data.frame(y_1 = rbinom(n = 100, size = 1, prob = 0.3), 
 #'                    y_2 = rnorm(n = 100, mean = 8, sd = 2))
 #' data$y_1_2 <- ntile_label(data$y_1, n = 2, digits = 0) 
-#' data$y_2_4 <- ntile_label(data$y_2, n = 4)
+#' data$y_2_4 <- ntile_label(data$y_2, n = 4, digits = 1)
 #' @details n_tile_label is very similar to ntile from dplyr. But n_tile_label creates
 #' the n groups and then labels them. For each group i, the value of the ntile_label is 
 #' [min(i) - max(i)].

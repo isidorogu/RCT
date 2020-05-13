@@ -12,7 +12,8 @@ balance_regression(data, treatment)
 \item{treatment}{a string with treatment status column}
 }
 \value{
-A list: "regression_tables" = regression output of treatment~X'B, "F_test" = table with the F tests of each regression
+A list: regression_tables = regression output of treatment against all covariates, 
+F_test = table with the F tests of each regression
 }
 \description{
 balance_regression() Runs a LPM of treatment status against all covariates (treatment~X'B).
@@ -24,6 +25,7 @@ models: 1) LPM(treatment(0,1)~X'b) and 2) LPM(treatment(0,2)~X'b). The value are
 details of the F_test of these models.
 }
 \examples{
-data <-data.frame(x = c(1:5), treatment = c(0,1,0,1,0))
-balance_regression(data, "treatment")
+data <-data.frame(x1 = rnorm(n = 100, mean = 100, sd = 15), x2= rnorm(n = 100, mean = 65), 
+treat = rep(c(0,1,2,3,4), each = 20))
+balance_regression(data, treatment = "treat")
 }
