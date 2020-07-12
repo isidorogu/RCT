@@ -102,7 +102,8 @@ impact_eval <- function(data, endogenous_vars, treatment,
   ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
                           function(x, y) data %>%
                             dplyr::group_by(!!rlang::sym(x)) %>% dplyr::do(fit = lfe::felm(stats::as.formula(y),
-                                                                      data = .)) %>% broom::tidy(., fit) )
+                                                                      data = .)) ) %>%
+    purrr::map(., function(x) purrr::map_dfr(x$fit, broom::tidy))
 
   base::names(ITT_het)<-stringr::str_c(endogenous_vars_final, heterogenous_vars_final, sep = "_")
 
