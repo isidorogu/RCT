@@ -72,7 +72,7 @@ test_that("impact_eval correct dimensions tests", {
   expect_equal(length(imp_eval3), 2)
   expect_equal(ncol(imp_eval3$log_outcome), 5)
   expect_equal(nrow(imp_eval3$log_outcome), 4)
-  expect_equal(ncol(imp_eval3$log_outcome_inc_quartile), 5)
+  expect_equal(ncol(imp_eval3$log_outcome_inc_quartile), 6)
   expect_equal(nrow(imp_eval3$log_outcome_inc_quartile), 16)
   
   

@@ -15,4 +15,4 @@ There are currently no downstream dependencies for this package
 ## Resubmission
 This is a resubmission. In this version I have:
 
-*Changed balance_regression.R to ensure compatibility with upcoming dplyr 1.0.0
+*Changed impact_eval.R to ensure compatibility with upcoming broom 0.70
