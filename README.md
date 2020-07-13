@@ -32,7 +32,7 @@ share_control = $\frac{1}{3}$
 share_treat_1 = $\frac{1}{3}$
 share_treat_2 = $\frac{1}{3}$
 
-First 3 units are assigned to control, second 3 units are assigned to treat 1 and the last 3 unit are assigned to treat 2. As you already notice, the last observation is the remainder. This is a misfit. Misfits alter the succesful random assignment because they are not. In the example, this observation is assigned to treat 2 non-randomly. 
+First 3 units are assigned to control, second 3 units are assigned to treat 1 and the last 3 unit are assigned to treat 2. As you already notice, the last observation is the remainder. This is a misfit. Misfits alter the successful random assignment because they are not. In the example, this observation is assigned to treat 2 non-randomly. 
 
 The function **treatment_assign** handles misfits in three ways. 
 
@@ -44,7 +44,7 @@ The function **treatment_assign** handles misfits in three ways.
 
 ### 5 Impact evaluation 
 
-After running a RCT, the social scientist wants to know the ATE for one or several variables and the distribution of this impact within the blocking variables to check for Heterogenous Treatment Effects. Aditionally, if the experiment lasted for more than one period and panel-data is available, one must cluster the standard errors by each i unit and control for period fixed effects. Finally, if by chance one o more covariates are not balance, one would like to control for them. 
+After running a RCT, the social scientist wants to know the ATE for one or several variables and the distribution of this impact within the blocking variables to check for Heterogenous Treatment Effects. Additionally, if the experiment lasted for more than one period and panel-data is available, one must cluster the standard errors by each i unit and control for period fixed effects. Finally, if by chance one o more covariates are not balance, one would like to control for them. 
 
 Function **impact_eval** does all this jobs in one single command. It runs all the ATE regressions for each endogenous variable, all the combinations of endogenous variables*heterogenous variables. 
 

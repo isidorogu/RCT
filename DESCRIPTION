@@ -1,6 +1,6 @@
 Package: RCT
 Title: Assign Treatments, Power Calculations, Balances, Impact Evaluation of Experiments
-Version: 1.0.2.1
+Version: 1.0.3
 Authors@R: person("Isidoro", "Garcia-Urquieta", email = "isidoro.gu@gmail.com", 
   role =c("aut", "cre"))
 Description: Assists in the whole process of designing and evaluating Randomized Control Trials.

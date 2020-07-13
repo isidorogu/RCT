@@ -6,7 +6,7 @@
 #' @examples 
 #' data <-data.frame(x1 = rnorm(n = 100, mean = 100, sd = 15), x2= rnorm(n = 100, mean = 65), 
 #' treat = rep(c(0,1,2,3,4), each = 20))
-#' balance_regression(data, treatment = "treat")
+#' balance_regression(data = data, treatment = "treat")
 #' @details This functions runs a Linear Probability model of each treatment group & control on all the 
 #' columns in data. For instance, if treatment column has values of (0,1,2), balance_regression will run two 
 #' models: 1) LPM(treatment(0,1)~X'b) and 2) LPM(treatment(0,2)~X'b). The value are the regression tables and 
