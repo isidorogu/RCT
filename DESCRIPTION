@@ -1,11 +1,11 @@
 Package: RCT
 Title: Assign Treatments, Power Calculations, Balances, Impact Evaluation of Experiments
-Version: 1.0.3
+Version: 1.0.4
 Authors@R: person("Isidoro", "Garcia-Urquieta", email = "isidoro.gu@gmail.com", 
   role =c("aut", "cre"))
 Description: Assists in the whole process of designing and evaluating Randomized Control Trials.
     Robust treatment assignment by strata/blocks, that handles misfits; 
-    Power calculations of the minimum detectable treatment effect
+    Power calculations of the minimum detectable treatment effect or minimum populations;
     Balance tables of T-test of covariates; 
     Balance Regression: (treatment ~ all x variables) with F-test of null model; 
     Impact_evaluation: Impact evaluation regressions. This function
@@ -40,5 +40,5 @@ Suggests:
     rmarkdown,
     testthat,
     qpdf
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr

@@ -27,5 +27,5 @@ details of the F_test of these models.
 \examples{
 data <-data.frame(x1 = rnorm(n = 100, mean = 100, sd = 15), x2= rnorm(n = 100, mean = 65), 
 treat = rep(c(0,1,2,3,4), each = 20))
-balance_regression(data, treatment = "treat")
+balance_regression(data = data, treatment = "treat")
 }

@@ -13,6 +13,8 @@ This library has a function called **summary_statistics** to know the distributi
 
 The function **tau_min** calculates the minimum detectable treatment effect given power, significance level, outcome variable and number of observations.  This function computes this for any share of control observations. 
 
+The function **N_min** calculates the minimum population needed to identify a target tau_min
+
 ### 3. Decide which variables to use for strata building
 
 Prior to random assignment, one has to decide which **categorical** variables to build blocks. Hence, the blocks or strata are the group that combine every categorical variable. The cardinality of this groups are all the possible combinations of the chose categorical variables. 

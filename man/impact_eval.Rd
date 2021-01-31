@@ -40,7 +40,7 @@ Impact Evaluation of Treatment Effects
 This function carries out the evaluation of treatment effects on endogenous variables. 
 It automatically runs the regressions of all the endogenous_vars supplied & all the combinations 
 of endogenous_vars and heterogenous_vars. Additionally, the function has the option of include 
-fixed_effects, contols and cluster variables for clustered std errors.
+fixed_effects, controls and cluster variables for clustered std errors.
 }
 \examples{
 data <- data.frame(y_1 = rnorm(n = 100, mean = 100, sd = 15), 

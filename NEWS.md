@@ -6,6 +6,10 @@ RCT helps you in the whole process of designing and evaluating a RCT.
 This version ensures that all functions remain compatible with upcoming dplyr 1.0.0
 - balance_regression should continue to work well in both dplyr 0.89 and dplyr 1.0.0
 
-# RCT 1.0.2.1
+# RCT 1.0.3
 
 This version ensures that all functions remain compatible with broom 0.70
+
+# RCT 1.0.4
+
+This version introduces a new function (N_min) & corrects CRAN error due to lfe change.
