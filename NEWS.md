@@ -10,6 +10,6 @@ This version ensures that all functions remain compatible with upcoming dplyr 1.
 
 This version ensures that all functions remain compatible with broom 0.70
 
-# RCT 1.0.4
+# RCT 1.1
 
 This version introduces a new function (N_min) & corrects CRAN error due to lfe change.
