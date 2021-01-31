@@ -30,7 +30,7 @@
 #' 
 #' tau_min: Computation of the minimum detectable effect between control & treatment units
 #' 
-#' tau_min_probability: Computation of the minimum detectable effect between control & treatment units for dicotomical y-vars
+#' tau_min_probability: Computation of the minimum detectable effect between control & treatment units for dichotomous y-vars
 #' 
 #' summary_statistics: Summary statistics of all numeric columns in your data
 #' 

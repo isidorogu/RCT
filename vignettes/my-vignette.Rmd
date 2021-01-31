@@ -67,7 +67,7 @@ $E[X(1)] = E[X(0)]$
 
 Where $X_{n,k}$
 
-Aditionally, if $k$ is sufficiently big. One can end-up in a multiple hypothesis problem, where approximately x% (level of significance) is significant by chance. 
+Additionally, if $k$ is sufficiently big. One can end-up in a multiple hypothesis problem, where approximately x% (level of significance) is significant by chance. 
 
 Hence, we can test balance by running the following regression: 
 
@@ -166,7 +166,7 @@ The function **treatment_assign** handles misfits in three ways.
 
 ### 5 Impact evaluation 
 
-After running a RCT, the social scientist wants to know the ATE for one or several variables and the distribution of this impact within the blocking variables to check for Heterogenous Treatment Effects. Aditionally, if the experiment lasted for more than one period and panel-data is available, one must cluster the standard errors by each i unit and control for period fixed effects. Finally, if by chance one o more covariates are not balance, one would like to control for them. 
+After running a RCT, the social scientist wants to know the ATE for one or several variables and the distribution of this impact within the blocking variables to check for Heterogenous Treatment Effects. Additionally, if the experiment lasted for more than one period and panel-data is available, one must cluster the standard errors by each i unit and control for period fixed effects. Finally, if by chance one o more covariates are not balance, one would like to control for them. 
 
 Function **impact_eval** does all this jobs in one single command. It runs all the ATE regressions for each endogenous variable, all the combinations of endogenous variables*heterogenous variables. 
 
