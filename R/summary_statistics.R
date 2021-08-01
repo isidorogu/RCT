@@ -17,6 +17,8 @@ summary_statistics<- function(data, probs = c(0, 0.05, 0.1, 0.25, 0.5,
 
     variables_numericas <- base %>% dplyr::select_if(is.numeric)
     
+    variables_numericas<- variables_numericas %>% dplyr::mutate_if(is.integer, ~as.double(.))
+    
     statistic<-NULL
 
     estadisticas_descriptivas <- purrr::map_dfc(.x = variables_numericas,
