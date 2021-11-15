@@ -24,7 +24,7 @@ assign_1_var<-treatment_assign(data = data_original,
 test_that("treatment_assign correct dimensions tests", {
   expect_is(assign_1_var, "list")
   expect_equal(length(assign_1_var), 2)
-  expect_equal(ncol(assign_1_var$summary_strata), 4)
+  expect_equal(ncol(assign_1_var$summary_strata), 8)
   expect_equal(nrow(assign_1_var$summary_strata), 4)
   expect_equal(ncol(assign_1_var$data), 4)
   expect_equal(nrow(assign_1_var$data), nrow(data_original))
@@ -36,7 +36,7 @@ test_that("treatment_assign correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names treatment_assign" , {
-  expect_equal(names(assign_1_var$summary_strata), c("strata", "inc_quartile", "n_strata", "n_missfits"))
+  expect_equal(names(assign_1_var$summary_strata), c("strata", "inc_quartile", "n_strata", "n_missfits", "0","1", "2", "3"))
   expect_equal(names(assign_1_var$data), c("key", "strata", "treat", "missfit"))
   expect_equal(nrow(assign_1_var$data %>% dplyr::filter(is.na(treat))), 0)
   })
@@ -56,7 +56,7 @@ assign_2_var<-treatment_assign(data = data_original,
 test_that("treatment_assign2 correct dimensions tests", {
   expect_is(assign_2_var, "list")
   expect_equal(length(assign_2_var), 2)
-  expect_equal(ncol(assign_2_var$summary_strata), 5)
+  expect_equal(ncol(assign_2_var$summary_strata), 9)
   expect_equal(nrow(assign_2_var$summary_strata), 16)
   expect_equal(ncol(assign_2_var$data), 4)
   expect_equal(nrow(assign_2_var$data), nrow(data_original))
@@ -68,7 +68,7 @@ test_that("treatment_assign2 correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names treatment_assign2" , {
-  expect_equal(names(assign_2_var$summary_strata), c("strata", "inc_quartile", "age_quartile" , "n_strata", "n_missfits"))
+  expect_equal(names(assign_2_var$summary_strata), c("strata", "inc_quartile", "age_quartile" , "n_strata", "n_missfits","0","1","2","3"))
   expect_equal(names(assign_2_var$data), c("key", "strata", "treat", "missfit"))
   expect_equal(nrow(assign_2_var$data %>% dplyr::filter(is.na(treat))), 0)
 })
@@ -87,7 +87,7 @@ assign_3_var<-treatment_assign(data = data_original,
 test_that("treatment_assign3 correct dimensions tests", {
   expect_is(assign_3_var, "list")
   expect_equal(length(assign_3_var), 2)
-  expect_equal(ncol(assign_3_var$summary_strata), 5)
+  expect_equal(ncol(assign_3_var$summary_strata), 10)
   expect_equal(nrow(assign_3_var$summary_strata), 16)
   expect_equal(ncol(assign_3_var$data), 4)
   expect_equal(nrow(assign_3_var$data), nrow(data_original))
@@ -98,7 +98,7 @@ test_that("treatment_assign3 correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names treatment_assign3" , {
-  expect_equal(names(assign_3_var$summary_strata), c("strata", "inc_quartile", "age_quartile" , "n_strata", "n_missfits"))
+  expect_equal(names(assign_3_var$summary_strata), c("strata", "inc_quartile", "age_quartile" , "n_strata", "n_missfits", "0","1","2","3","NA"))
   expect_equal(names(assign_3_var$data), c("key", "strata", "treat", "missfit"))
   expect_equal(nrow(assign_3_var$data %>% dplyr::filter(is.na(treat)) ), sum(assign_3_var$data$missfit))
 })

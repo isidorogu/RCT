@@ -13,3 +13,6 @@ This version ensures that all functions remain compatible with broom 0.70
 # RCT 1.1
 
 This version introduces a new function (N_min) & corrects CRAN error due to lfe change.
+
+# RCT 1.1.1
+This version now add a table of the treatments into summary_strata within treatment_Assign

@@ -202,6 +202,7 @@ treatment_assign <- function(data,
         
     }
     
+    n<-NULL
     tab_treat<-
         data %>% 
         dplyr::group_by(strata, treat) %>% 
