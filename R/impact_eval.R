@@ -81,6 +81,9 @@ impact_eval <- function(data, endogenous_vars, treatment,
       
 
   # Heterogeneidades: mejor con formulas
+    data<-
+      data %>% 
+      dplyr::arrange(!!!heterogenous_vars)
     
     matrix<-base::expand.grid(heterogenous_vars, endogenous_vars)
     
