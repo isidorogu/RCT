@@ -1,9 +1,9 @@
 ## Test environments
-* local MacOS install, R 4.0.0
-* x86_64-pc-linux-gnu (64 bit) (on travis-ci), R 4.0.0
-* Rhub Windows Server 2008 R2, R-devel (32/64) bit 
-* Win builder x86_64-w64-mingw32, Rdevel 
-
+* local MacOS install, R 4.1.2
+* Rhub Windows Server 2022 R2, R-devel (64) bit 
+* Ubuntu Linux 20.04, r-release
+* Fedora Linux, R devel
+* Debian Linux, R-release 
 
 
 ## R CMD check results
@@ -16,5 +16,5 @@ There are currently no downstream dependencies for this package
 ## Resubmission
 This is a resubmission. In this version I have:
 
-*Added a table per treat columns in summary_strata within the treatment_assign function 
-*Fix a minor bug in summary statistics
+* Fixed a minor bug in impact_eval function
+

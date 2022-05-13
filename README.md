@@ -56,4 +56,5 @@ $$Y_i = \alpha + \tau treatment + \epsilon $$
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/isidorogu/RCT.svg?branch=master)](https://travis-ci.org/isidorogu/RCT)
+[![R-CMD-check](https://github.com/isidorogu/RCT/workflows/R-CMD-check/badge.svg)](https://github.com/isidorogu/RCT/actions)
 <!-- badges: end -->

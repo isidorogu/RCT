@@ -4,8 +4,8 @@ context("Pruebas impact_eval")
 
 # Base completa para TODOS los tests 
 data_original<-data.frame(key = c(1:1000), 
-                          inc_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), each = 250), 
-                          age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 250), 
+                          inc_quartile = rep(c("Q2", "Q1", "Q4", "Q3"), each = 250), 
+                          age_quartile = rep(c("Q2", "Q1", "Q4", "Q3"), times = 250), 
                           inc = rnorm(n = 1000, mean = 8000, sd = 4000), 
                           age = rpois(n = 1000, lambda = 34), 
                           log_outcome = rnorm(n = 1000, mean = 8, sd = 1.4), 
@@ -85,6 +85,24 @@ test_that("Correct names impact_eval" , {
   expect_equal(sum(stringr::str_detect(unique(imp_eval3$log_outcome$term), pattern = "Intercept")), 0)
   expect_equal(sum(stringr::str_detect(unique(imp_eval3$log_outcome_inc_quartile$term), pattern = "Intercept")), 0)
   
+})
+
+
+# Heterogeneidades: dos variables het 
+imp_eval4<-impact_eval(data = data_original, 
+                       endogenous_vars = "log_outcome", 
+                       treatment = "treat", 
+                       heterogenous_vars = c("inc_quartile", "age_quartile"))
+
+imp_eval5<-impact_eval(data = data_original %>% dplyr::filter(inc_quartile == 'Q1'),
+                       endogenous_vars = 'log_outcome', 
+                       treatment =  'treat')
+
+
+test_that("Correct aligment het_var values with estimates" , {
+  expect_equal(unique(imp_eval4$log_outcome_inc_quartile$inc_quartile), c("Q1", "Q2", "Q3", "Q4"))
+  expect_equal(imp_eval4$log_outcome_inc_quartile$estimate[1:4], imp_eval5$log_outcome$estimate[1:4])
+
 })
 
 
