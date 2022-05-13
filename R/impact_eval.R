@@ -81,6 +81,9 @@ impact_eval <- function(data, endogenous_vars, treatment,
       
 
   # Heterogeneidades: mejor con formulas
+    data<-
+      data %>% 
+      dplyr::arrange(!!!rlang::syms(heterogenous_vars))
     
     matrix<-base::expand.grid(heterogenous_vars, endogenous_vars)
     
@@ -100,6 +103,7 @@ impact_eval <- function(data, endogenous_vars, treatment,
   formulas_het<-purrr::map_chr(endogenous_vars_final  , ~glue::glue(formula_sin_y))
 
   if (utils::packageVersion("broom") > "0.5.6") {
+    
     
     ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
                             function(x, y) data %>%
