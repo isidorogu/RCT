@@ -244,7 +244,7 @@ ntile_label <- function(var, n, digits = 0) {
     cuantiles <- base::round(stats::quantile(var, secuencia, na.rm = T), digits = digits)
     
     cuantiles2<-base::round(cuantiles[2:length(cuantiles)], digits = digits)
-    label<-stringr::str_c("[", utils::head(cuantiles, -1), " a ", cuantiles2, "]")
+    label<-stringr::str_c("[", utils::head(cuantiles, -1), " to ", cuantiles2, "]")
     
     referencia<-dplyr::tibble(grupos = seq(1, n), 
                        label = label)
