@@ -35,6 +35,13 @@ impact_eval <- function(data, endogenous_vars, treatment,
                          fixed_effect_vars = NULL, control_vars, cluster_var) {
   
   # Defining type of standard errors based & cluster_arg on the presence of cluster vars 
+  outcome<-NULL
+  term<-NULL
+  estimate<-NULL
+  p.value<-NULL
+  std.error<-NULL
+  statistic<-NULL
+  
   if (missing(cluster_var)) {
     se_type = "classical"
     clusters = NULL 
