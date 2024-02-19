@@ -3,7 +3,7 @@
 #' @param endogenous_vars Vector of Y's on which treatment effects will be evaluated
 #' @param treatment Variable indicating the treatment status
 #' @param heterogenous_vars Vector of variables for which you wish to assess treatment distributions/heterogeneities.
-#' @param cluster_vars Vector of variables to cluster the standard errors. Default is without clustered std errors
+#' @param cluster_var String of cluster variable the standard errors. Default is without clustered std errors
 #' @param fixed_effect_vars Vector of variables to add as fixed effects. Default is without fixed effects
 #' @param control_vars Vector of variables to control for in the evaluation. Default is without controls
 #' @return impact_eval() returns a list of regression tables. The names of the list are the same as the endogenous variables.
@@ -21,7 +21,7 @@
 #'                        endogenous_vars = c("y_1", "y_2"), 
 #'                        treatment = "treat", 
 #'                        heterogenous_vars = c("heterogenous_var1"), 
-#'                        cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
+#'                        cluster_var = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
 #'                        control_vars = c("control_var1"))
 #' @details This function carries out the evaluation of treatment effects on endogenous variables. 
 #' It automatically runs the regressions of all the endogenous_vars supplied & all the combinations 

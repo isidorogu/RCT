@@ -2,6 +2,7 @@
 % Please edit documentation in R/RCT.R
 \docType{package}
 \name{RCT}
+\alias{RCT-package}
 \alias{RCT}
 \title{Designing, random assigning and evaluating Randomized Control Trials}
 \description{
