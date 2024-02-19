@@ -1,10 +1,11 @@
 ## Test environments
-* local MacOS install, R 4.0.0
-* x86_64-pc-linux-gnu (64 bit) (on travis-ci), R 4.0.0
-* Rhub Windows Server 2008 R2, R-devel (32/64) bit 
-* Win builder x86_64-w64-mingw32, Rdevel 
-
-
+* local MacOS install, R 4.3.2
+* mcaos 12.7.3 (R-release) on Github actions (GHA)
+* Microsoft Windows Server 2022 (R-release) on Github actions 
+* Microsoft Windows x86_64-w64-mingw32 R-devel from (Rhub)
+* ubuntu 22.04.03 (R-devel) on GHA 
+* ubuntu 22.04.03 (R-release) on GHA
+* ubuntu 22.04.03 (R-oldrel-1) on GHA
 
 ## R CMD check results
 There were no ERRORs, WARNINGs Nor  NOTEs.
