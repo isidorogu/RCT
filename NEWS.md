@@ -17,5 +17,6 @@ This version introduces a new function (N_min) & corrects CRAN error due to lfe 
 # RCT 1.1.1
 This version now add a table of the treatments into summary_strata within treatment_Assign
 
-# RCT 1.1.2 
-This version fixes a bug in `impact_eval` when two or more heterogeneous variables are added and are not sorted
+
+# RCT 1.2
+This version replaces the regression engine for impact_eval from lfe (deprecated) to lm_robust. It has extremely similar functionality. The main difference is that now we only support 1 cluster variables and no more than 2 fixed effect variables.

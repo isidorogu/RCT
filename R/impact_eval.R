@@ -31,121 +31,124 @@
 #' @export
 #' @importFrom magrittr %>%
 impact_eval <- function(data, endogenous_vars, treatment, 
-                         heterogenous_vars, cluster_vars = "0", 
-                         fixed_effect_vars = "0", control_vars) {
+                         heterogenous_vars, 
+                         fixed_effect_vars = NULL, control_vars, cluster_var) {
   
-  # Poniendo como sumas los fixed effects, cluster std errors, controles 
-  cluster_formula<- stringr::str_c(cluster_vars, collapse = "+" )
-  fixed_effect_formula<- stringr::str_c(fixed_effect_vars, collapse = "+")
+  # Defining type of standard errors based & cluster_arg on the presence of cluster vars 
+  if (missing(cluster_var)) {
+    se_type = "classical"
+    clusters = NULL 
+  } else {
+    se_type = "stata"
+    clusters = rlang::expr(!!rlang::sym(cluster_var))
+  }
   
+  
+  # Defining formula vector based on the presence of control vars 
   if (missing(control_vars)) {
-    
-    formula_sin_y <-stringr::str_c("{.}~factor({treatment}) ",
-                                   " | ", 
-                                   fixed_effect_formula, 
-                                   " | ", 
-                                   " 0 | ", 
-                                   cluster_formula)
-    
+    formula_sin_y<-"{.}~factor({treatment})"
     formulas<-purrr::map_chr(endogenous_vars  , ~glue::glue(formula_sin_y))
     
-    ITT <- purrr::map(formulas,  ~lfe::felm(stats::as.formula(.), data = data ) %>% broom::tidy(.) )
+  } else {
+    controles_formula<- stringr::str_c(control_vars, collapse = "+")
+    formula_sin_y<-stringr::str_c("{.}~factor({treatment}) + ", controles_formula)
+    
+    formulas<-purrr::map_chr(endogenous_vars  , ~glue::glue(formula_sin_y))
+  }
+  
+  # Defining fixed effects arg expression; lm_robust doesn't support missing_arg
+  if(length(fixed_effect_vars)>2) {
+    stop("More than 2 fixed effect variables not supported")
+  } else if (length(fixed_effect_vars) ==2 ){
+    fixed_effects = rlang::expr(~!!rlang::sym(fixed_effect_vars[1])+!!rlang::sym(fixed_effect_vars[2]))
+  } else if (length(fixed_effect_vars ==1)) { 
+    fixed_effects = rlang::expr(!!rlang::sym(fixed_effect_vars))
+  } else { 
+      fixed_effects = NULL} 
+  
+  
+  if (is.null(fixed_effects)) {
+    ITT <- purrr::map(formulas,  
+                      function(x) estimatr::lm_robust(formula =  stats::as.formula(x), 
+                                                      se_type = se_type,
+                                                      clusters = base::eval(clusters),
+                                                      data = data) %>% 
+                        broom::tidy(.) %>% 
+                        dplyr::select(outcome, term, estimate, std.error, statistic, p.value))
     
     base::names(ITT)<-endogenous_vars
     
     
   } else {
-    
-    controles_formula<- stringr::str_c(control_vars, collapse = "+")
-    
-   formula_sin_y <-stringr::str_c("{.}~factor({treatment}) + ", 
-                       controles_formula, 
-                       " | ", 
-                       fixed_effect_formula, 
-                       " | ", 
-                       " 0 | ", 
-                       cluster_formula)
-  
-  formulas<-purrr::map_chr(endogenous_vars  , ~glue::glue(formula_sin_y))
 
-  ITT <- purrr::map(formulas,  ~lfe::felm(stats::as.formula(.), data = data ) %>% broom::tidy(.) )
-  
-  base::names(ITT)<-endogenous_vars
-  
+    ITT <- purrr::map(formulas,  
+                      function(x) estimatr::lm_robust(formula =  stats::as.formula(x), 
+                                           fixed_effects = base::eval(fixed_effects),
+                                           se_type = se_type, 
+                                           clusters = base::eval(clusters),
+                                           data = data) %>% 
+                        broom::tidy(.) %>% 
+                        dplyr::select(outcome, term, estimate, std.error, statistic, p.value))
+    
+    base::names(ITT)<-endogenous_vars
   }
   
   if (missing(heterogenous_vars)) { 
     
     return(ITT)
   } else {
+    # Sorting by the heterogenous vars to match group by and vectors 
+    data <- data %>% dplyr::arrange(!!!rlang::syms(heterogenous_vars))
+    
+    # Creating combinations of endogenous and het vars 
+    matrix<-tidyr::expand_grid(heterogenous_vars, endogenous_vars)
+    . <- NULL
+    fit <- NULL
+    endogenous_vars_final <- base::as.character(matrix$endogenous_vars)
+    heterogenous_vars_final <- base::as.character(matrix$heterogenous_vars)
+    formulas_het <- purrr::map_chr(endogenous_vars_final, 
+                                   ~glue::glue(formula_sin_y))
+    
+    if (is.null(fixed_effects)) {
+      ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
+                           function(x, y) data %>%
+                             dplyr::group_by(!!rlang::sym(x)) %>% 
+                             dplyr::do(fit = estimatr::lm_robust(stats::as.formula(y),
+                                                                 clusters = base::eval(clusters),
+                                                                 se_type = se_type, 
+                                                                 data = .)) ) %>%
+        purrr::map(., function(x) purrr::map_dfr(x$fit, broom::tidy)) 
       
-
-  # Heterogeneidades: mejor con formulas
-    data<-
-      data %>% 
-      dplyr::arrange(!!!rlang::syms(heterogenous_vars))
-    
-    matrix<-base::expand.grid(heterogenous_vars, endogenous_vars)
-    
-    Var1<-NULL
-    Var2<-NULL
-    .<-NULL
-    fit<-NULL
-    matrix<-
-      matrix %>%
-      dplyr::rename(variables_heterogeneas = Var1,
-                    variables_endogenas = Var2)
-    
-    endogenous_vars_final<-base::as.character(matrix$variables_endogenas)
-    heterogenous_vars_final<-base::as.character(matrix$variables_heterogeneas)
-    
-
-  formulas_het<-purrr::map_chr(endogenous_vars_final  , ~glue::glue(formula_sin_y))
-
-  if (utils::packageVersion("broom") > "0.5.6") {
-    
-    
-    ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
-                            function(x, y) data %>%
-                              dplyr::group_by(!!rlang::sym(x)) %>% 
-                              dplyr::do(fit = lfe::felm(stats::as.formula(y),
-                                                        data = .)) ) %>%
-      purrr::map(., function(x) purrr::map_dfr(x$fit, broom::tidy))
-    
-    ITT_het<-purrr::map2(heterogenous_vars_final, ITT_het, 
-                         function(x,y) { 
-                           
-                           valores_het<-base::unique(dplyr::pull(data, !!rlang::sym(x) ) ) 
-                           
-                           y<-
-                             y %>% 
-                             dplyr::mutate(!!x  := rep(valores_het, each = nrow(y)/length(valores_het) ) ) %>%
-                             dplyr::select(!!x, dplyr::everything())
-                         }
-    )
-    
-  
-    base::names(ITT_het)<-stringr::str_c(endogenous_vars_final, heterogenous_vars_final, sep = "_")
-  
-    regresiones_final<-c(ITT, ITT_het)
-    
-    return(regresiones_final)
-  }
-  else {
-    
+      
+    } else {  
+    # Running regressions for all combinations+ broom
     ITT_het<-purrr::map2(heterogenous_vars_final, formulas_het,
                          function(x, y) data %>%
                            dplyr::group_by(!!rlang::sym(x)) %>% 
-                           dplyr::do(fit = lfe::felm(stats::as.formula(y),
-                                                     data = .)) %>% broom::tidy(., fit)) 
+                           dplyr::do(fit = estimatr::lm_robust(stats::as.formula(y),
+                                                               fixed_effects = base::eval(fixed_effects),
+                                                               clusters = base::eval(clusters),
+                                                               se_type = se_type, 
+                                                               data = .)) ) %>%
+      purrr::map(., function(x) purrr::map_dfr(x$fit, broom::tidy)) 
+    }
+
+    # Only keeping what we want per datafram
+    ITT_het<-purrr::map(ITT_het, function(x) x %>%
+      dplyr::select(outcome, term, estimate, std.error, statistic, p.value))
     
-    base::names(ITT_het)<-stringr::str_c(endogenous_vars_final, heterogenous_vars_final, sep = "_")
+    # Creating the het_var vector within every dataframe
+    ITT_het<-purrr::map2(heterogenous_vars_final, ITT_het, function(x,y){
+      valores_het <-base::unique(dplyr::pull(data, !!rlang::sym(x)))
+      y<- y %>% dplyr::mutate(`:=`(!!x, rep(valores_het, each = nrow(y)/length(valores_het)))) %>%
+        dplyr::select(!!x, dplyr::everything())
+   })
     
-    regresiones_final<-c(ITT, ITT_het)
+    # Names
+    names(ITT_het)<-stringr::str_c(endogenous_vars_final, heterogenous_vars_final, sep = "_")
     
-    return(regresiones_final)
     
   }
-}
-
+  res_final<-c(ITT, ITT_het)
+  return(res_final)
 }
