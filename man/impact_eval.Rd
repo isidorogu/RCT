@@ -9,9 +9,9 @@ impact_eval(
   endogenous_vars,
   treatment,
   heterogenous_vars,
-  cluster_vars = "0",
-  fixed_effect_vars = "0",
-  control_vars
+  fixed_effect_vars = NULL,
+  control_vars,
+  cluster_var
 )
 }
 \arguments{
@@ -23,11 +23,11 @@ impact_eval(
 
 \item{heterogenous_vars}{Vector of variables for which you wish to assess treatment distributions/heterogeneities.}
 
-\item{cluster_vars}{Vector of variables to cluster the standard errors. Default is without clustered std errors}
-
 \item{fixed_effect_vars}{Vector of variables to add as fixed effects. Default is without fixed effects}
 
 \item{control_vars}{Vector of variables to control for in the evaluation. Default is without controls}
+
+\item{cluster_var}{String of cluster variable the standard errors. Default is without clustered std errors}
 }
 \value{
 impact_eval() returns a list of regression tables. The names of the list are the same as the endogenous variables.
@@ -55,6 +55,6 @@ evaluation<-impact_eval(data = data,
                        endogenous_vars = c("y_1", "y_2"), 
                        treatment = "treat", 
                        heterogenous_vars = c("heterogenous_var1"), 
-                       cluster_vars = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
+                       cluster_var = "cluster_var1", fixed_effect_vars = c("fixed_effect_var1"), 
                        control_vars = c("control_var1"))
 }
