@@ -1,11 +1,11 @@
-context("Pruebas impact_eval")
+context("Tests impact_eval")
 
 #' @importFrom magrittr %>%
 
 # Base completa para TODOS los tests 
 data_original<-data.frame(key = c(1:1000), 
-                          inc_quartile = rep(c("Q2", "Q1", "Q4", "Q3"), each = 250), 
-                          age_quartile = rep(c("Q2", "Q1", "Q4", "Q3"), times = 250), 
+                          inc_quartile = rep(c("Q2", "Q1", "Q3", "Q4"), each = 250), 
+                          age_quartile = rep(c("Q1", "Q2", "Q3", "Q4"), times = 250), 
                           inc = rnorm(n = 1000, mean = 8000, sd = 4000), 
                           age = rpois(n = 1000, lambda = 34), 
                           log_outcome = rnorm(n = 1000, mean = 8, sd = 1.4), 
@@ -19,7 +19,7 @@ imp_eval<-impact_eval(data = data_original,
 test_that("impact_eval correct dimensions tests", {
   expect_is(imp_eval, "list")
   expect_equal(length(imp_eval), 1)
-  expect_equal(ncol(imp_eval$log_outcome), 5)
+  expect_equal(ncol(imp_eval$log_outcome), 6)
   expect_equal(nrow(imp_eval$log_outcome), 4)
 
   
@@ -28,7 +28,7 @@ test_that("impact_eval correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names impact_eval" , {
-  expect_equal(names(imp_eval$log_outcome), c("term", "estimate", "std.error", "statistic", "p.value"))
+  expect_equal(names(imp_eval$log_outcome), c("outcome","term", "estimate", "std.error", "statistic", "p.value"))
   expect_equal(sum(stringr::str_detect(unique(imp_eval$log_outcome$term), pattern = "Intercept")), 1)
 })
 
@@ -36,15 +36,15 @@ test_that("Correct names impact_eval" , {
 
 ####
 # Dos variables
-
+####
 imp_eval2<-impact_eval(data = data_original, 
                       endogenous_vars = c("log_outcome", "inc"), treatment = "treat")
 
 test_that("impact_eval2 correct dimensions tests", {
   expect_is(imp_eval2, "list")
   expect_equal(length(imp_eval2), 2)
-  expect_equal(ncol(imp_eval2$log_outcome), 5)
-  expect_equal(ncol(imp_eval2$inc), 5)
+  expect_equal(ncol(imp_eval2$log_outcome), 6)
+  expect_equal(ncol(imp_eval2$inc), 6)
   expect_equal(nrow(imp_eval2$log_outcome), 4)
   expect_equal(nrow(imp_eval2$inc), 4)
 
@@ -52,7 +52,7 @@ test_that("impact_eval2 correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names impact_eval2" , {
-  expect_equal(names(imp_eval2$log_outcome), c("term", "estimate", "std.error", "statistic", "p.value"))
+  expect_equal(names(imp_eval2$log_outcome), c("outcome", "term", "estimate", "std.error", "statistic", "p.value"))
   expect_equal(sum(stringr::str_detect(unique(imp_eval2$log_outcome$term), pattern = "Intercept")), 1)
   expect_equal(sum(stringr::str_detect(unique(imp_eval2$inc$term), pattern = "Intercept")), 1)
 })
@@ -70,10 +70,11 @@ imp_eval3<-impact_eval(data = data_original,
 test_that("impact_eval correct dimensions tests", {
   expect_is(imp_eval3, "list")
   expect_equal(length(imp_eval3), 2)
-  expect_equal(ncol(imp_eval3$log_outcome), 5)
+  expect_equal(ncol(imp_eval3$log_outcome), 6)
   expect_equal(nrow(imp_eval3$log_outcome), 4)
-  expect_equal(ncol(imp_eval3$log_outcome_inc_quartile), 6)
+  expect_equal(ncol(imp_eval3$log_outcome_inc_quartile), 7)
   expect_equal(nrow(imp_eval3$log_outcome_inc_quartile), 16)
+  
   
   
 })
@@ -81,28 +82,23 @@ test_that("impact_eval correct dimensions tests", {
 
 # 2. Nombres
 test_that("Correct names impact_eval" , {
-  expect_equal(names(imp_eval3$log_outcome), c("term", "estimate", "std.error", "statistic", "p.value"))
+  expect_equal(names(imp_eval3$log_outcome), c("outcome","term", "estimate", "std.error", "statistic", "p.value"))
   expect_equal(sum(stringr::str_detect(unique(imp_eval3$log_outcome$term), pattern = "Intercept")), 0)
   expect_equal(sum(stringr::str_detect(unique(imp_eval3$log_outcome_inc_quartile$term), pattern = "Intercept")), 0)
   
 })
 
 
-# Heterogeneidades: dos variables het 
-imp_eval4<-impact_eval(data = data_original, 
+# Het coeffs are correct 
+imp_eval4<-impact_eval(data = data_original %>% filter(inc_quartile == "Q1"), 
                        endogenous_vars = "log_outcome", 
                        treatment = "treat", 
-                       heterogenous_vars = c("inc_quartile", "age_quartile"))
+                       heterogenous_vars = "inc_quartile", 
+                       fixed_effect_vars = "age_quartile", control_vars = "inc")
 
-imp_eval5<-impact_eval(data = data_original %>% dplyr::filter(inc_quartile == 'Q1'),
-                       endogenous_vars = 'log_outcome', 
-                       treatment =  'treat')
-
-
-test_that("Correct aligment het_var values with estimates" , {
-  expect_equal(unique(imp_eval4$log_outcome_inc_quartile$inc_quartile), c("Q1", "Q2", "Q3", "Q4"))
-  expect_equal(imp_eval4$log_outcome_inc_quartile$estimate[1:4], imp_eval5$log_outcome$estimate[1:4])
-
+test_that("Het vars match het coeffs", {
+  expect_equal(imp_eval3$log_outcome_inc_quartile$estimate[imp_eval3$log_outcome_inc_quartile$inc_quartile=="Q1" & 
+                                                             imp_eval3$log_outcome_inc_quartile$term == "factor(treat)1"], 
+               imp_eval4$log_outcome_inc_quartile$estimate[imp_eval4$log_outcome_inc_quartile$term == "factor(treat)1"])
 })
-
 
