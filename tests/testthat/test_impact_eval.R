@@ -90,7 +90,7 @@ test_that("Correct names impact_eval" , {
 
 
 # Het coeffs are correct 
-imp_eval4<-impact_eval(data = data_original %>% filter(inc_quartile == "Q1"), 
+imp_eval4<-impact_eval(data = data_original %>% dplyr::filter(inc_quartile == "Q1"), 
                        endogenous_vars = "log_outcome", 
                        treatment = "treat", 
                        heterogenous_vars = "inc_quartile", 
