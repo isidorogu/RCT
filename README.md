@@ -55,7 +55,6 @@ For each combination the model run is:
 $$Y_i = \alpha + \tau treatment + \epsilon $$
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/isidorogu/RCT.svg?branch=master)](https://travis-ci.org/isidorogu/RCT)
 [![R-CMD-check](https://github.com/isidorogu/RCT/workflows/R-CMD-check/badge.svg)](https://github.com/isidorogu/RCT/actions)
 [![R-CMD-check](https://github.com/isidorogu/RCT/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/isidorogu/RCT/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
