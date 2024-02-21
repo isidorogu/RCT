@@ -2,7 +2,7 @@
 * local MacOS install, R 4.3.2
 * mcaos 12.7.3 (R-release) on Github actions (GHA)
 * Microsoft Windows Server 2022 (R-release) on Github actions 
-* Microsoft Windows x86_64-w64-mingw32 R-devel from (Rhub)
+* Microsoft Windows (winbuildier) x86_64-w64-mingw32 (R-release) 
 * ubuntu 22.04.03 (R-devel) on GHA 
 * ubuntu 22.04.03 (R-release) on GHA
 * ubuntu 22.04.03 (R-oldrel-1) on GHA
